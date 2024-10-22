@@ -1,7 +1,9 @@
-export default function About() {
-	return (
-		<section>
-			<h1>About</h1>
-		</section>
-	);
+import { IAboutProps } from "@/interfaces/about";
+
+export default function About(props: IAboutProps) {
+  return (
+    <section>
+      <p dangerouslySetInnerHTML={{ __html: props.aboutUserData }}></p>
+    </section>
+  );
 }
