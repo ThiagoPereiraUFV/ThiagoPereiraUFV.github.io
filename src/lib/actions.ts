@@ -1,4 +1,4 @@
-'use server';
+// 'use server';
 
 import { IGetGithubRawFileProps } from "@/interfaces/actions";
 import { IGithubUserData, IGithubUserRepo } from "@/interfaces/github";
