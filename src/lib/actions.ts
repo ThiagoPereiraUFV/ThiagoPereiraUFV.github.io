@@ -58,6 +58,7 @@ export async function getGithubUserData(username: string) {
 			return {
 				error: {
 					message: "User not found",
+					details: await response.json(),
 					status: response.status
 				}
 			} as const;
@@ -137,7 +138,7 @@ export async function getGithubRawFile(fileData: IGetGithubRawFileProps) {
 
 		const data = await response.text();
 
-		return data;
+		return data.replace(/\n/g, "<br />");
 	} catch (error) {
 		return {
 			error: {
