@@ -8,7 +8,10 @@ export default function Header(props: IHeaderProps) {
       <nav>
         <ul className="tw-flex tw-flex-wrap tw-justify-center tw-gap-4">
           {props.sections.map((section, index) => (
-            <li key={index}>
+            <li
+              className="tw-transition tw-ease-in-out tw-duration-300 hover:tw--translate-y-0.5 hover:tw--translate-x-0.5"
+              key={index}
+            >
               <Link href={`#${section.trim().toLowerCase()}`}>{section}</Link>
             </li>
           ))}
