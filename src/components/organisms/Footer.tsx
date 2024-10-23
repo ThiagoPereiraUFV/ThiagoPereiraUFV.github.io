@@ -3,7 +3,7 @@ import { capitalizeFirstLetter } from "@/helpers/strings";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function Footer(props: IFooterProps) {
+export default function Footer({ profileName, contact }: IFooterProps) {
   return (
     <footer
       id="contact"
@@ -11,16 +11,16 @@ export default function Footer(props: IFooterProps) {
     >
       <p className="tw-text-2xl">You can reach me via:</p>
       <div className="tw-flex tw-flex-wrap tw-justify-center tw-gap-4">
-        {Object.entries(props).map(([key, contact]) => (
+        {Object.entries(contact).map(([key, c]) => (
           <Link
             key={key}
-            href={contact.url}
+            href={c.url}
             target="_blank"
             className="tw-transition tw-ease-in-out tw-duration-300 hover:tw--translate-y-0.5 hover:tw--translate-x-0.5"
           >
             <Image
               className="tw-text-white"
-              src={contact.icon}
+              src={c.icon}
               alt={capitalizeFirstLetter(key)}
               title={capitalizeFirstLetter(key)}
               width={75}
@@ -30,8 +30,8 @@ export default function Footer(props: IFooterProps) {
         ))}
       </div>
       <small>
-        Built with ❤️ by <Link href={props.github.url}>Thiago Pereira</Link> | ©{" "}
-        {new Date().getFullYear()} all rights reserved
+        Built with ❤️ by <Link href={contact.github.url}>{profileName}</Link> |
+        © {new Date().getFullYear()} all rights reserved
       </small>
     </footer>
   );

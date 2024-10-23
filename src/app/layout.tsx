@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { userData } from "@/helpers/userdata";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -14,9 +15,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Thiago Pereira - Portfolio",
-  description: "Portfolio of Thiago Pereira",
-  keywords: ["Portfolio", "Thiago Pereira", "Software Engineer"],
+  title: `${userData.profileName} - Portfolio`,
+  description: `Portfolio of ${userData.profileName}`,
+  keywords: ["Portfolio", userData.profileName, "Software Engineer"],
 };
 
 export default function RootLayout({

@@ -42,7 +42,7 @@ export default async function Home() {
       <Header {...data.header} />
       <About {...data.about} />
       <Projects {...data.projects} />
-      <Footer {...userData.contact} />
+      <Footer {...userData} />
     </main>
   );
 }
