@@ -3,18 +3,29 @@ import Link from "next/link";
 
 export default function Projects(props: IProjectsProps) {
   return (
-    <section id="projects">
-      <h2>Projects</h2>
-      <ul>
+    <section
+      id="projects"
+      className="tw-grid tw-grid-cols-1 tw-px-10 lg:tw-px-20 tw-gap-4"
+    >
+      <h2 className="tw-text-3xl">Projects</h2>
+      <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-4">
         {props.repos.map((repo) => (
-          <li key={repo.id}>
-            <Link href={repo.html_url} target="_blank">
+          <div
+            key={repo.id}
+            className="tw-flex tw-flex-col tw-gap-2 tw-border tw-rounded-lg tw-px-6 tw-py-4"
+          >
+            <Link
+              href={repo.html_url}
+              className="tw-text-2xl tw-transition tw-ease-in-out tw-duration-300 hover:tw--translate-y-0.5 hover:tw--translate-x-0.5"
+              target="_blank"
+            >
               {repo.name}
             </Link>
             <p>{repo.description}</p>
-          </li>
+            <small>{repo.language}</small>
+          </div>
         ))}
-      </ul>
+      </div>
     </section>
   );
 }
