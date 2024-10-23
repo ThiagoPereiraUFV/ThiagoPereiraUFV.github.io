@@ -1,4 +1,5 @@
 import { IFooterProps } from "@/interfaces/footer";
+import { capitalizeFirstLetter } from "@/helpers/strings";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -12,7 +13,8 @@ export default function Footer(props: IFooterProps) {
             <Image
               className="tw-text-white"
               src={contact.icon}
-              alt={key}
+              alt={capitalizeFirstLetter(key)}
+              title={capitalizeFirstLetter(key)}
               width={75}
               height={75}
             />
