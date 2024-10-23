@@ -9,7 +9,12 @@ export default function Footer(props: IFooterProps) {
       <p className="tw-text-2xl tw-text-center">You can reach me via:</p>
       <div className="tw-flex tw-flex-wrap tw-justify-center tw-gap-4">
         {Object.entries(props).map(([key, contact]) => (
-          <Link key={key} href={contact.url} target="_blank">
+          <Link
+            key={key}
+            href={contact.url}
+            target="_blank"
+            className="tw-transition tw-ease-in-out tw-duration-300 hover:tw--translate-y-0.5 hover:tw--translate-x-0.5"
+          >
             <Image
               className="tw-text-white"
               src={contact.icon}
