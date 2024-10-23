@@ -5,15 +5,16 @@ import Projects from "@/components/organisms/Projects";
 import { getGithubData, getGithubRawFile } from "@/lib/actions";
 
 export default async function Home() {
-  const githubData = await getGithubData("ThiagoPereiraUFV");
+  const username = "ThiagoPereiraUFV";
+  const githubData = await getGithubData(username);
 
   if ("error" in githubData && githubData.error) {
     return <div>{githubData.error.message}</div>;
   }
 
   const aboutUserData = await getGithubRawFile({
-    owner: "ThiagoPereiraUFV",
-    repo: "ThiagoPereiraUFV",
+    owner: username,
+    repo: username,
     branch: "main",
     filepath: "README.md",
   });
