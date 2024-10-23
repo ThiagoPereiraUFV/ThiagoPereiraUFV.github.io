@@ -2,10 +2,11 @@ import About from "@/components/organisms/About";
 import Footer from "@/components/organisms/Footer";
 import Header from "@/components/organisms/Header";
 import Projects from "@/components/organisms/Projects";
+import { userData } from "@/helpers/userdata";
 import { getGithubData, getGithubRawFile } from "@/lib/actions";
 
 export default async function Home() {
-  const username = "ThiagoPereiraUFV";
+  const { username, profileName } = userData;
   const githubData = await getGithubData(username);
 
   if ("error" in githubData && githubData.error) {
@@ -25,7 +26,7 @@ export default async function Home() {
 
   const data = {
     header: {
-      title: "Thiago Pereira",
+      title: profileName,
       sections: ["About", "Projects", "Contact"],
     },
     about: {
