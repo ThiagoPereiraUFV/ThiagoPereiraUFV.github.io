@@ -38,11 +38,11 @@ export default async function Home() {
   };
 
   return (
-    <main>
+    <main className="tw-grid tw-grid-cols-1 tw-gap-10 tw-py-4">
       <Header {...data.header} />
       <About {...data.about} />
       <Projects {...data.projects} />
-      <Footer />
+      <Footer {...userData.contact} />
     </main>
   );
 }
