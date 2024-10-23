@@ -10,7 +10,7 @@ export default function Footer(props: IFooterProps) {
     <footer id="contact" className="tw-grid tw-grid-cols-1 tw-gap-4">
       <p className="tw-text-2xl tw-text-center">You can reach me via:</p>
       <div className="tw-flex tw-flex-wrap tw-justify-center tw-gap-4">
-        <Link href={props.email} target="_blank">
+        <Link href={props.email}>
           <Image
             className="tw-text-white"
             src={emailIcon.src}
