@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Projects(props: IProjectsProps) {
   return (
-    <section>
+    <section id="projects">
       <h2>Projects</h2>
       <ul>
         {props.repos.map((repo) => (
