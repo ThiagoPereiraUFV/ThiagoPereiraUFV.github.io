@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <!-- Main rounded rectangle background -->
+  <rect x="2" y="2" width="20" height="20" rx="2" fill="currentColor"/>
+
+  <!-- Letter "in" and other elements in white -->
+  <g fill="white">
+    <!-- The "in" letters -->
+    <path d="M8 10v8H5v-8h3zM6.5 6.732c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zM20 18h-3v-4.396c0-1.494-.496-2.5-1.738-2.5-.95 0-1.516.64-1.764 1.258-.091.22-.114.53-.114.84V18h-3s.04-7.348 0-8h3v1.13c.457-.702 1.275-1.702 3.11-1.702C18.517 9.428 20 10.97 20 13.977V18z"/>
+  </g>
+</svg>
