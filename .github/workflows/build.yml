@@ -2,11 +2,12 @@ name: Build
 run-name: Build next.js app
 
 on:
-  # Runs only if lint workflow pass
-  workflow_run:
-    workflows: ["Lint"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
