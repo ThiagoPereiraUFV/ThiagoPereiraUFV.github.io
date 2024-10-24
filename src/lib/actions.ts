@@ -138,7 +138,7 @@ export async function getGithubRawFile(fileData: IGetGithubRawFileProps) {
 
 		const data = await response.text();
 
-		return data.replace(/\n/g, "<br />");
+		return data;
 	} catch (error) {
 		return {
 			error: {
