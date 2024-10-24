@@ -1,14 +1,10 @@
-# Sample workflow for building and deploying a Next.js site to GitHub Pages
-#
-# To get started with Next.js see: https://nextjs.org/docs/getting-started
-#
 name: Deploy
-run-name: Deploy next.js app
+run-name: Deploy next.js app to GitHub Pages
 
 on:
-  # Runs only if build and lint workflows pass
+  # Runs only if build workflow pass
   workflow_run:
-    workflows: ["Build", "Lint"]
+    workflows: ["Build"]
     types:
       - completed
 
