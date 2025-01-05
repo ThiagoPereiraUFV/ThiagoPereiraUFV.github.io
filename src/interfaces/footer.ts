@@ -1,10 +1,7 @@
+import { userData } from "@/helpers/userdata";
+
 export interface IFooterProps {
 	username: string;
 	profileName: string;
-	contact: {
-		[key: string]: {
-			url: string;
-			icon: string;
-		};
-	}
+	contact: typeof userData.contact;
 }
