@@ -2,9 +2,6 @@ name: Build
 run-name: Build next.js app
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - develop
