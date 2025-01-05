@@ -1,9 +1,26 @@
+"use client";
+
 import { IFooterProps } from "@/interfaces/footer";
 import { capitalizeFirstLetter } from "@/helpers/strings";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Footer({ profileName, contact }: IFooterProps) {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check initial preference
+    setIsDarkMode(window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+    // Listen for changes
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => setIsDarkMode(e.matches);
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
   return (
     <footer
       id="contact"
@@ -20,7 +37,7 @@ export default function Footer({ profileName, contact }: IFooterProps) {
           >
             <Image
               className="tw-text-white"
-              src={c.icon}
+              src={isDarkMode ? c.iconDark : c.icon}
               alt={capitalizeFirstLetter(key)}
               title={capitalizeFirstLetter(key)}
               width={75}
