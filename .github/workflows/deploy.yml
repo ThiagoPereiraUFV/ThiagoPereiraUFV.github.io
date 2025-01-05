@@ -2,11 +2,7 @@ name: Deploy
 run-name: Deploy next.js app to GitHub Pages
 
 on:
-  # Runs only if build workflow pass on main branch
-  workflow_run:
-    workflows: ["Build"]
-    types:
-      - completed
+  push:
     branches:
       - main
 
