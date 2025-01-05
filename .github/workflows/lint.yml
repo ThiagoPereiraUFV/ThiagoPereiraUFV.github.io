@@ -2,9 +2,6 @@ name: Lint
 run-name: Lint next.js app
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - develop
