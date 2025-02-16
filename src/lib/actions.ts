@@ -2,6 +2,7 @@
 
 import { IGetGithubRawFileProps } from "@/interfaces/actions";
 import { IGithubUserData, IGithubUserRepo } from "@/interfaces/github";
+import { ILowCodeProject } from "@/interfaces/low-code-projects";
 
 export async function getGithubData(username: string) {
 	try {
@@ -137,6 +138,32 @@ export async function getGithubRawFile(fileData: IGetGithubRawFileProps) {
 		}
 
 		const data = await response.text();
+
+		return data;
+	} catch (error) {
+		return {
+			error: {
+				message: error instanceof Error ? `Error: ${error.message}` : `Error: ${error}`,
+				status: 500
+			}
+		} as const;
+	}
+}
+
+export async function getLowCodeProjects() {
+	try {
+		const response = await fetch("https://n8n-jtjw.onrender.com/webhook/8319d94b-07a7-4a24-8e35-d9696c68c1d9/workflows");
+
+		if (!response.ok) {
+			return {
+				error: {
+					message: "Projects not found",
+					status: response.status
+				}
+			} as const;
+		}
+
+		const data: ILowCodeProject[] = await response.json();
 
 		return data;
 	} catch (error) {
