@@ -3,7 +3,7 @@
 import { ILowCodeProject } from "@/interfaces/low-code-projects";
 
 if (typeof window !== "undefined") {
-  require("@n8n_io/n8n-demo-component/n8n-demo.bundled.js");
+  import("@n8n_io/n8n-demo-component/n8n-demo.bundled.js");
 }
 
 interface IN8NWorkflowProps {
