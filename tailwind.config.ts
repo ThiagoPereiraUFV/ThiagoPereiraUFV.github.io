@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import { PluginUtils } from "tailwindcss/types/config";
 
 const config: Config = {
   prefix: "tw-",
@@ -977,7 +976,7 @@ const config: Config = {
 
       full: '100%',
     }),
-    size: ({ theme }: PluginUtils) => ({
+    size: ({ theme }) => ({
       auto: 'auto',
       ...theme('spacing'),
       '1/2': '50%',
