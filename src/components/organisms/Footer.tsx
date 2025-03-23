@@ -24,19 +24,19 @@ export default function Footer({ profileName, contact }: IFooterProps) {
   return (
     <footer
       id="contact"
-      className="tw-grid tw-grid-cols-1 tw-gap-8 tw-text-center"
+      className="tw:grid tw:grid-cols-1 tw:gap-8 tw:text-center"
     >
-      <p className="tw-text-2xl">You can reach me via:</p>
-      <div className="tw-flex tw-flex-wrap tw-justify-center tw-gap-4">
+      <p className="tw:text-2xl">You can reach me via:</p>
+      <div className="tw:flex tw:flex-wrap tw:justify-center tw:gap-4">
         {Object.entries(contact).map(([key, c]) => (
           <Link
             key={key}
             href={c.url}
             target="_blank"
-            className="tw-transition tw-ease-in-out tw-duration-300 hover:tw--translate-y-0.5 hover:tw--translate-x-0.5"
+            className="tw:transition tw:ease-in-out tw:duration-300 tw:hover:-translate-y-0.5 tw:hover:-translate-x-0.5"
           >
             <Image
-              className="tw-text-white"
+              className="tw:text-white"
               src={isDarkMode ? c.iconDark : c.icon}
               alt={capitalizeFirstLetter(key)}
               title={capitalizeFirstLetter(key)}
