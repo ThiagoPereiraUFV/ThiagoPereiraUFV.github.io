@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import { PluginUtils } from "tailwindcss/types/config";
 
 const config: Config = {
   prefix: "tw-",
@@ -656,7 +655,7 @@ const config: Config = {
       max: 'max-content',
       fit: 'fit-content',
     }),
-    maxWidth: ({ theme, breakpoints }) => ({
+    maxWidth: ({ theme }) => ({
       ...theme('spacing'),
       none: 'none',
       xs: '20rem',
@@ -675,7 +674,7 @@ const config: Config = {
       max: 'max-content',
       fit: 'fit-content',
       prose: '65ch',
-      ...breakpoints(theme('screens')),
+      ...theme('screens'),
     }),
     minHeight: ({ theme }) => ({
       ...theme('spacing'),
@@ -977,7 +976,7 @@ const config: Config = {
 
       full: '100%',
     }),
-    size: ({ theme }: PluginUtils) => ({
+    size: ({ theme }) => ({
       auto: 'auto',
       ...theme('spacing'),
       '1/2': '50%',
