@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@n8n_io/n8n-demo-component": "^1.0.18",
-    "next": "15.2.3",
+    "next": "15.2.4",
     "react": "19.0.0-rc-65a56d0e-20241020",
     "react-dom": "19.0.0-rc-65a56d0e-20241020"
   },
