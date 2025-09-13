@@ -1,4 +1,8 @@
 import '@testing-library/jest-dom'
+import React from 'react'
+
+// Add React import for JSX
+global.React = React
 
 // Global test setup
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
@@ -10,7 +14,7 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 // Mock Next.js image component
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props) => {
+  default: (props: any) => {
     return React.createElement('img', props)
   },
 }))
@@ -18,7 +22,7 @@ jest.mock('next/image', () => ({
 // Mock Next.js link component
 jest.mock('next/link', () => ({
   __esModule: true,
-  default: ({ children, ...props }) => {
+  default: ({ children, ...props }: any) => {
     return React.createElement('a', props, children)
   },
 }))
@@ -30,7 +34,3 @@ jest.mock('next/font/local', () => ({
     variable: '--font-test',
   }),
 }))
-
-// Add React import for JSX
-import React from 'react'
-global.React = React

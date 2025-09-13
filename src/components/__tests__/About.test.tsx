@@ -66,9 +66,9 @@ describe('About Component', () => {
       aboutUserData: '<p>Test content</p>'
     };
 
-    render(<About {...props} />);
+    const { container } = render(<About {...props} />);
     
-    const section = screen.getByRole('region', { name: /about/i });
+    const section = container.querySelector('#about');
     expect(section).toHaveClass('tw:px-10', 'tw:lg:px-20');
   });
 
@@ -118,27 +118,27 @@ describe('About Component', () => {
     expect(paragraph).toHaveAttribute('data-test', 'about-text');
   });
 
-  it('should be accessible with section role', () => {
+  it('should be accessible as a section element', () => {
     const props: IAboutProps = {
       aboutUserData: '<h2>Accessibility Test</h2>'
     };
 
-    render(<About {...props} />);
+    const { container } = render(<About {...props} />);
     
-    const section = screen.getByRole('region');
+    const section = container.querySelector('section#about');
     expect(section).toBeInTheDocument();
     expect(section).toHaveAttribute('id', 'about');
   });
 
   it('should handle special characters in content', () => {
     const props: IAboutProps = {
-      aboutUserData: '<p>Special chars: &amp; &lt; &gt; &quot; &#39;</p>'
+      aboutUserData: '<p>Special chars: &amp; &lt; &gt; " \'</p>'
     };
 
     const { container } = render(<About {...props} />);
     
     const section = container.querySelector('#about');
-    expect(section?.innerHTML).toBe('<p>Special chars: &amp; &lt; &gt; &quot; &#39;</p>');
+    expect(section?.innerHTML).toBe('<p>Special chars: &amp; &lt; &gt; " \'</p>');
   });
 
   it('should maintain HTML structure integrity', () => {

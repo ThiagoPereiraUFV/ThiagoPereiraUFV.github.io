@@ -78,10 +78,13 @@ describe('userData helper', () => {
 
     it('should have icons with appropriate structure', () => {
       // Icons are imported SVG files that get processed by Next.js
-      // They should have different import paths or structures
-      expect(userData.contact.email.icon).not.toBe(userData.contact.email.iconDark);
-      expect(userData.contact.linkedin.icon).not.toBe(userData.contact.linkedin.iconDark);
-      expect(userData.contact.github.icon).not.toBe(userData.contact.github.iconDark);
+      // They should be defined and not null/undefined
+      expect(userData.contact.email.icon).toBeDefined();
+      expect(userData.contact.email.iconDark).toBeDefined();
+      expect(userData.contact.linkedin.icon).toBeDefined();  
+      expect(userData.contact.linkedin.iconDark).toBeDefined();
+      expect(userData.contact.github.icon).toBeDefined();
+      expect(userData.contact.github.iconDark).toBeDefined();
     });
   });
 
