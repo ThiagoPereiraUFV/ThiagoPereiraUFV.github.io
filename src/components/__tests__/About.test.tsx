@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import About from '../organisms/About';
 import { IAboutProps } from '@/interfaces/about';
 

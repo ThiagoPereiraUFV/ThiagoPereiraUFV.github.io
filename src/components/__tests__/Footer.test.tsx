@@ -186,7 +186,7 @@ describe('Footer Component', () => {
         ) {
           return true;
         }
-      } catch (e) {
+      } catch {
         // Not a valid URL (perhaps mailto, etc.) - already handled above
       }
       return false;

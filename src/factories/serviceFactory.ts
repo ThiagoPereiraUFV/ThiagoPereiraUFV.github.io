@@ -35,7 +35,7 @@ export class ServiceFactory {
 
   // Reset for testing
   static reset(): void {
-    this.githubRepository = undefined as any;
-    this.lowCodeRepository = undefined as any;
+    this.githubRepository = null as unknown as IGithubRepository;
+    this.lowCodeRepository = null as unknown as ILowCodeRepository;
   }
 }

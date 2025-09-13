@@ -1,5 +1,6 @@
 // Test utilities and mocks for comprehensive testing
 import { render } from '@testing-library/react';
+import { ILowCodeProject } from '@/interfaces/low-code-projects';
 
 export const mockGithubUser = {
   login: "testuser",
@@ -139,16 +140,26 @@ export const mockGithubRepo = {
   default_branch: "main"
 };
 
-export const mockLowCodeProject = {
-  id: 1,
+export const mockLowCodeProject: ILowCodeProject = {
+  createdAt: "2023-01-01T00:00:00Z",
+  updatedAt: "2023-01-01T00:00:00Z",
+  id: "1",
   name: "Test Workflow",
-  description: "A test workflow",
-  url: "https://example.com/workflow/1",
-  tags: ["test", "automation"]
+  active: true,
+  nodes: [],
+  connections: {},
+  settings: {},
+  staticData: {},
+  meta: {},
+  pinData: {},
+  versionId: "v1",
+  triggerCount: 0,
+  shared: [],
+  tags: []
 };
 
 // Mock fetch function for tests
-export const mockFetch = (responseData: any, status = 200, ok = true) => {
+export const mockFetch = (responseData: unknown, status = 200, ok = true) => {
   return jest.fn().mockResolvedValue({
     ok,
     status,

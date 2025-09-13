@@ -38,7 +38,7 @@ export default async function Home() {
       aboutUserData,
     },
     projects: {
-      repos: githubData.repos,
+      repos: githubData.repos || [],
     },
   };
 

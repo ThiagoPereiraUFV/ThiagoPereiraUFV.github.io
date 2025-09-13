@@ -4,33 +4,54 @@ import { ServiceFactory } from '@/factories/serviceFactory';
 import { IGithubRepository, ILowCodeRepository } from '@/interfaces/services';
 import { mockGithubUser, mockGithubRepo, mockLowCodeProject } from '../../testUtils';
 
+// Define interfaces for mock component props
+interface MockHeaderProps {
+  title: string;
+}
+
+interface MockAboutProps {
+  aboutUserData: string;
+}
+
+interface MockProjectsProps {
+  repos: unknown[];
+}
+
+interface MockLowCodeProjectsProps {
+  projects: unknown[];
+}
+
+interface MockFooterProps {
+  profileName: string;
+}
+
 // Mock all the components used in the page
 jest.mock('@/components/organisms/Header', () => {
-  return function MockHeader(props: any) {
+  return function MockHeader(props: MockHeaderProps) {
     return <div data-testid="header">Header: {props.title}</div>;
   };
 });
 
 jest.mock('@/components/organisms/About', () => {
-  return function MockAbout(props: any) {
+  return function MockAbout(props: MockAboutProps) {
     return <div data-testid="about">About: {props.aboutUserData.substring(0, 50)}...</div>;
   };
 });
 
 jest.mock('@/components/organisms/Projects', () => {
-  return function MockProjects(props: any) {
+  return function MockProjects(props: MockProjectsProps) {
     return <div data-testid="projects">Projects: {props.repos.length} repos</div>;
   };
 });
 
 jest.mock('@/components/organisms/LowCodeProjects', () => {
-  return function MockLowCodeProjects(props: any) {
+  return function MockLowCodeProjects(props: MockLowCodeProjectsProps) {
     return <div data-testid="low-code-projects">LowCode: {props.projects.length} projects</div>;
   };
 });
 
 jest.mock('@/components/organisms/Footer', () => {
-  return function MockFooter(props: any) {
+  return function MockFooter(props: MockFooterProps) {
     return <div data-testid="footer">Footer: {props.profileName}</div>;
   };
 });

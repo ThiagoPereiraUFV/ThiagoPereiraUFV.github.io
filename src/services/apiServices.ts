@@ -1,5 +1,5 @@
 // Repository implementations following Single Responsibility Principle
-import { IGithubApiService, ILowCodeApiService, IApiResult, IApiError } from '@/interfaces/services';
+import { IGithubApiService, ILowCodeApiService, IApiResult } from '@/interfaces/services';
 import { IGithubUserData, IGithubUserRepo } from '@/interfaces/github';
 import { ILowCodeProject } from '@/interfaces/low-code-projects';
 import { IGetGithubRawFileProps } from '@/interfaces/actions';
