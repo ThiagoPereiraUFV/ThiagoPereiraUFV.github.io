@@ -175,11 +175,22 @@ describe('Footer Component', () => {
   it('should render all links with target blank', () => {
     render(<Footer {...defaultProps} />);
     
-    const contactLinks = screen.getAllByRole('link').filter(link => 
-      link.getAttribute('href')?.includes('mailto:') || 
-      link.getAttribute('href')?.includes('linkedin.com') ||
-      (link.getAttribute('href')?.includes('github.com') && link.textContent !== 'Test User')
-    );
+    const contactLinks = screen.getAllByRole('link').filter(link => {
+      const href = link.getAttribute('href') || '';
+      if (href.startsWith('mailto:')) return true;
+      try {
+        const url = new URL(href, window.location.origin); // supports relative/absolute
+        if (
+          (url.hostname === 'linkedin.com' || url.hostname.endsWith('.linkedin.com')) ||
+          ((url.hostname === 'github.com' || url.hostname.endsWith('.github.com')) && link.textContent !== 'Test User')
+        ) {
+          return true;
+        }
+      } catch (e) {
+        // Not a valid URL (perhaps mailto, etc.) - already handled above
+      }
+      return false;
+    });
     
     contactLinks.forEach(link => {
       expect(link.getAttribute('target')).toBe('_blank');
