@@ -5,12 +5,6 @@ import { ILowCodeProject } from '@/interfaces/low-code-projects';
 // Mock the dynamic import of n8n-demo-component
 jest.mock('@n8n_io/n8n-demo-component/n8n-demo.bundled.js', () => ({}));
 
-// Mock window object
-Object.defineProperty(window, 'window', {
-  value: global,
-  writable: true
-});
-
 describe('N8NWorkflow Component', () => {
   const mockWorkflow: ILowCodeProject = {
     createdAt: '2023-01-01T00:00:00Z',

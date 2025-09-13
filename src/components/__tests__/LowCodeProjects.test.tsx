@@ -57,11 +57,11 @@ describe('LowCodeProjects Component', () => {
   };
 
   it('should render low-code projects section with heading', () => {
-    render(<LowCodeProjects {...defaultProps} />);
+    const { container } = render(<LowCodeProjects {...defaultProps} />);
     
-    const section = screen.getByRole('region');
+    const section = container.querySelector('#low-code-projects');
     expect(section).toBeTruthy();
-    expect(section.getAttribute('id')).toBe('low-code-projects');
+    expect(section?.tagName.toLowerCase()).toBe('section');
     
     const heading = screen.getByRole('heading', { level: 2 });
     expect(heading).toBeTruthy();

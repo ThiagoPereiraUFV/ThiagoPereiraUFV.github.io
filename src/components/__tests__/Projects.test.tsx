@@ -19,11 +19,11 @@ describe('Projects Component', () => {
   };
 
   it('should render projects section with heading', () => {
-    render(<Projects {...defaultProps} />);
+    const { container } = render(<Projects {...defaultProps} />);
     
-    const section = screen.getByRole('region');
+    const section = container.querySelector('#projects');
     expect(section).toBeTruthy();
-    expect(section.getAttribute('id')).toBe('projects');
+    expect(section?.tagName.toLowerCase()).toBe('section');
     
     const heading = screen.getByRole('heading', { level: 2 });
     expect(heading).toBeTruthy();
