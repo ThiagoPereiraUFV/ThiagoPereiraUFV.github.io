@@ -1,6 +1,9 @@
 name: Test
 run-name: Test next.js app
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches:
