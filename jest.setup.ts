@@ -15,7 +15,16 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 jest.mock('next/image', () => ({
   __esModule: true,
   default: (props: any) => {
-    return React.createElement('img', props)
+    // Extract relevant props and properly handle src prop
+    const { src, alt, width, height, className, title } = props;
+    return React.createElement('img', {
+      src: typeof src === 'object' ? src.src || src.default : src,
+      alt,
+      width,
+      height,
+      className,
+      title
+    })
   },
 }))
 
