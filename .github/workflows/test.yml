@@ -63,7 +63,7 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.runner }} test:ci
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           file: ./coverage/lcov.info
           flags: unittests
