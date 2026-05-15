@@ -34,7 +34,7 @@ export default async function Home() {
   const data = {
     header: {
       title: profileName,
-      sections: ["About", "Projects", "Website Projects", "Contact"],
+      sections: ["About", "Website Projects", "Projects", "Contact"],
     },
     about: {
       aboutUserData,
