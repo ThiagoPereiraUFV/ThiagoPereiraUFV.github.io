@@ -53,7 +53,7 @@ export default async function Home() {
   return (
     <main>
       <Header {...data.header} />
-      <div className="tw:grid tw:grid-cols-1 tw:gap-24 tw:px-0 tw:py-16 tw:pb-0">
+      <div className="tw:grid tw:grid-cols-1 tw:gap-24 tw:px-0 tw:p-0">
         <About {...data.about} />
         <WebsiteProjects websites={websiteProjects} />
         <Projects {...data.projects} />
