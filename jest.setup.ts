@@ -14,7 +14,7 @@ global.ResizeObserver = jest.fn().mockImplementation(() => ({
 // Mock Next.js image component
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props: any) => {
+  default: (props: { src: string | { src?: string; default?: string }; alt?: string; width?: number; height?: number; className?: string; title?: string }) => {
     // Extract relevant props and properly handle src prop
     const { src, alt, width, height, className, title } = props;
     return React.createElement('img', {
@@ -31,7 +31,7 @@ jest.mock('next/image', () => ({
 // Mock Next.js link component
 jest.mock('next/link', () => ({
   __esModule: true,
-  default: ({ children, ...props }: any) => {
+  default: ({ children, ...props }: { children?: React.ReactNode; href?: string; className?: string; target?: string; rel?: string;[key: string]: unknown }) => {
     return React.createElement('a', props, children)
   },
 }))
