@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a **Next.js 15 personal portfolio** site exported as static HTML (`output: 'export'`). It uses React 19, TypeScript 5, and Tailwind CSS v4.
+This is a **Next.js 16 personal portfolio** site exported as static HTML (`output: 'export'`). It uses React 19, TypeScript 5, and Tailwind CSS v4.
 
 ---
 
@@ -19,7 +19,7 @@ src/
 │   ├── molecules/    # Composed atoms (e.g., N8NWorkflow)
 │   └── organisms/    # Full sections (Header, Footer, About, Projects, LowCodeProjects, WebsiteProjects)
 ├── factories/        # ServiceFactory — dependency injection container
-├── helpers/          # Pure utility functions and static data (userdata, strings, websitedata, websiteCardAnimation)
+├── helpers/          # Pure utility functions and static data (userdata, strings, websitedata, websiteCardAnimation, pageData)
 ├── interfaces/       # TypeScript interfaces for all data shapes
 ├── lib/              # Next.js server actions (thin wrappers over repositories)
 ├── repositories/     # Data access layer (GithubRepository, LowCodeRepository)
@@ -30,10 +30,11 @@ src/
 ### Data Flow
 
 ```
-page.tsx → lib/actions.ts → ServiceFactory → Repository → ApiService → external API
+page.tsx → helpers/pageData.ts (buildPageData) → lib/actions.ts → ServiceFactory → Repository → ApiService → external API
 ```
 
-- **`lib/actions.ts`**: Server actions — entry points consumed by page components.
+- **`helpers/pageData.ts`**: `buildPageData()` — orchestrates multiple server action calls and shapes the `IData` object consumed by `page.tsx`.
+- **`lib/actions.ts`**: Server actions — thin wrappers over repositories, called by `buildPageData`.
 - **`factories/serviceFactory.ts`**: Singleton factory that wires services into repositories. Supports `set*` and `reset()` methods for test injection.
 - **`repositories/`**: Implement repository interfaces; orchestrate API calls and error handling.
 - **`services/`**: Implement API service interfaces; handle raw HTTP calls.
@@ -45,7 +46,7 @@ page.tsx → lib/actions.ts → ServiceFactory → Repository → ApiService →
 - Components live in `src/components/` under `atoms/`, `molecules/`, or `organisms/`.
 - Each component receives a typed props interface from `src/interfaces/`.
 - Default exports only — no named component exports.
-- Use `"use client"` directive only when browser APIs or client-side state are required (e.g., `N8NWorkflow.tsx`).
+- Use `"use client"` directive only when browser APIs or client-side state are required (e.g., `WebsiteProjects.tsx`, `WebsiteCard.tsx`, `N8NWorkflow.tsx`).
 - Props interfaces are prefixed with `I` and named `I<ComponentName>Props` (e.g., `IHeaderProps`).
 
 ---
@@ -62,9 +63,9 @@ page.tsx → lib/actions.ts → ServiceFactory → Repository → ApiService →
 
 ## Styling
 
-- Tailwind CSS v4 with the `tw-` prefix (configured in `tailwind.config.ts`).
-- All Tailwind utility classes must use the `tw-` prefix — e.g., `tw-flex`, `tw-px-4`.
-- Responsive variants follow the pattern `tw-lg:grid-cols-3`.
+- Tailwind CSS v4 with the `tw:` prefix (configured via `@import 'tailwindcss' prefix(tw)` in `globals.css` and `prefix: "tw-"` in `tailwind.config.ts`).
+- All Tailwind utility classes must use the `tw:` prefix — e.g., `tw:flex`, `tw:px-4`.
+- Responsive variants follow the pattern `tw:lg:grid-cols-3`.
 - No CSS Modules; global styles are in `src/app/globals.css`.
 
 ---
@@ -79,7 +80,7 @@ page.tsx → lib/actions.ts → ServiceFactory → Repository → ApiService →
 - Use `expect(element).toBeTruthy()` and attribute assertions (`.getAttribute()`).
 - Shared mock data lives in `src/testUtils.ts` (e.g., `mockGithubUser`, `mockGithubRepo`).
 - Use `ServiceFactory.set*` / `ServiceFactory.reset()` to inject mock repositories in tests.
-- Path alias `@/` maps to `src/`.
+- Path alias `@/` maps to `src/`; `@/icons/*` maps to `src/assets/icons/*`.
 
 ### Running Tests
 
@@ -123,6 +124,8 @@ ServiceFactory.reset();
 
 Personal data (username, contact links, icons) is centralized in `src/helpers/userdata.ts` as a `const` object. Update this file to change portfolio content.
 
+Website project list is in `src/helpers/websitedata.ts`. The `LowCodeProjects` organism exists but is not currently rendered in `page.tsx`.
+
 ---
 
 ## Commands
@@ -130,6 +133,7 @@ Personal data (username, contact links, icons) is centralized in `src/helpers/us
 ```bash
 yarn dev      # development server (Turbopack)
 yarn build    # production build (static export)
+yarn serve    # serve static output (./out) locally
 yarn lint     # ESLint
 yarn test     # Jest
 ```
