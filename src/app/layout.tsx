@@ -57,12 +57,28 @@ export const metadata: Metadata = {
     siteName: `${userData.profileName} - Portfolio`,
     title: `${userData.profileName} - Software Engineer Portfolio`,
     description: `Portfolio of ${userData.profileName} — Full Stack Software Engineer specializing in web development, automation, and modern JavaScript/TypeScript ecosystems.`,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${userData.profileName} - Software Engineer Portfolio`,
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: `${userData.profileName} - Software Engineer Portfolio`,
     description: `Portfolio of ${userData.profileName} — Full Stack Software Engineer specializing in web development, automation, and modern JavaScript/TypeScript ecosystems.`,
     creator: `@${userData.username}`,
+    images: [
+      {
+        url: "/twitter-image",
+        width: 1200,
+        height: 600,
+        alt: `${userData.profileName} - Software Engineer Portfolio`,
+      },
+    ],
   },
 };
 

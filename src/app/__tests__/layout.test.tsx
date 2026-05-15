@@ -128,17 +128,29 @@ describe("Layout Metadata", () => {
       type: string;
       locale: string;
       siteName: string;
+      images: { url: string; width: number; height: number; alt: string }[];
     };
     expect(og.type).toBe("website");
     expect(og.locale).toBe("en_US");
     expect(og.siteName).toContain("Thiago Pereira");
+    expect(og.images).toHaveLength(1);
+    expect(og.images[0].width).toBe(1200);
+    expect(og.images[0].height).toBe(630);
+    expect(og.images[0].alt).toContain("Thiago Pereira");
   });
 
   it("should have correct twitter metadata", () => {
     expect(metadata.twitter).toBeDefined();
-    const tw = metadata.twitter as { card: string; title: string };
-    expect(tw.card).toBe("summary");
+    const tw = metadata.twitter as {
+      card: string;
+      title: string;
+      images: { url: string; width: number; height: number; alt: string }[];
+    };
+    expect(tw.card).toBe("summary_large_image");
     expect(tw.title).toContain("Thiago Pereira");
+    expect(tw.images).toHaveLength(1);
+    expect(tw.images[0].width).toBe(1200);
+    expect(tw.images[0].height).toBe(600);
   });
 
   it("should configure robots correctly", () => {
