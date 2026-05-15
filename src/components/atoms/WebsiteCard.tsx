@@ -1,18 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { IWebsiteProject } from "@/interfaces/website-projects";
+import {
+  buildKeyframes,
+  QUADRANTS,
+  shuffle,
+} from "@/helpers/websiteCardAnimation";
 
 const DESKTOP_WIDTH = 1920;
-const DESKTOP_ASPECT_HEIGHT = Math.round(DESKTOP_WIDTH * (9 / 16)); // 16:9, matches aspect-video
-const DESKTOP_HEIGHT = DESKTOP_ASPECT_HEIGHT; // 1080px — standard 1920×1080 viewport
+const DESKTOP_ASPECT_HEIGHT = Math.round(DESKTOP_WIDTH * (9 / 16)); // 1080px — perfect 1920×1080 render
 
 export default function WebsiteCard({ url, name }: IWebsiteProject) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0);
-  const duration = useRef(
-    parseFloat((15 + Math.random() * 20).toFixed(1)), // 15–35s, unique per card
-  );
+  const rawId = useId().replace(/:/g, "");
+  const animName = `wzp-${rawId}`;
+  const duration = useRef(parseFloat((15 + Math.random() * 20).toFixed(1)));
+  const quadrants = useRef(shuffle(QUADRANTS));
+
+  const keyframes = buildKeyframes(animName, quadrants.current);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -31,6 +38,7 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
       ref={containerRef}
       className="tw:relative tw:rounded-lg tw:overflow-hidden tw:border tw:aspect-video tw:bg-gray-100"
     >
+      <style>{keyframes}</style>
       {scale > 0 && (
         // Scale wrapper: shrinks 1920×1080 to fit the card, no animation here
         <div
@@ -42,15 +50,16 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
             overflow: "hidden",
           }}
         >
-          {/* Iframe: rendered at full desktop size, scrolls via animation */}
+          {/* Iframe: 1920×1080 — no distortion; zoom+pan animation only */}
           <iframe
             src={url}
             title={name}
             className="tw:pointer-events-none"
             style={{
               width: `${DESKTOP_WIDTH}px`,
-              height: `${DESKTOP_HEIGHT}px`,
-              animation: `website-scroll ${duration.current}s ease-in-out infinite`,
+              height: `${DESKTOP_ASPECT_HEIGHT}px`,
+              transformOrigin: "top left",
+              animation: `${animName} ${duration.current}s linear infinite`,
             }}
             loading="lazy"
           />

@@ -120,11 +120,15 @@ describe("WebsiteCard Component", () => {
     expect(wrapper.style.width).toBe("1920px");
     expect(wrapper.style.height).toBe("1080px");
 
-    // Iframe: animation on it, not the wrapper
+    // Iframe: unique per-card animation name with wzp- prefix
     const iframe = container.querySelector("iframe") as HTMLIFrameElement;
-    expect(iframe.style.animation).toContain("website-scroll");
+    expect(iframe.style.animation).toContain("wzp-");
     expect(iframe.style.width).toBe("1920px");
     expect(iframe.style.height).toBe("1080px");
+
+    // Style tag with keyframes should be present
+    const styleTag = container.querySelector("style");
+    expect(styleTag?.textContent).toContain("wzp-");
   });
 
   it("should render overlay link with accessible label", () => {

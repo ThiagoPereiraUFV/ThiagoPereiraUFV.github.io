@@ -23,25 +23,3 @@ body {
 img {
   display: inline;
 }
-
-@keyframes website-scroll {
-  0% {
-    transform: translateY(0);
-  }
-
-  45% {
-    transform: translateY(-50%);
-  }
-
-  50% {
-    transform: translateY(-50%);
-  }
-
-  95% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-}
