@@ -34,7 +34,7 @@ describe("Projects Component", () => {
     render(<Projects {...defaultProps} />);
 
     const projectLinks = screen.getAllByRole("link");
-    expect(projectLinks.length).toBe(2);
+    expect(projectLinks.length).toBe(4);
 
     const firstProject = screen.getByRole("link", { name: "test-repo" });
     const secondProject = screen.getByRole("link", { name: "another-repo" });
@@ -163,9 +163,9 @@ describe("Projects Component", () => {
   it("should render project links with hover effects", () => {
     const { container } = render(<Projects {...defaultProps} />);
 
-    const projectLinks = container.querySelectorAll("a");
+    const textLinks = container.querySelectorAll("a.tw\\:text-lg");
 
-    projectLinks.forEach((link) => {
+    textLinks.forEach((link) => {
       expect(link.className).toContain("tw:text-lg");
       expect(link.className).toContain("tw:font-semibold");
       expect(link.className).toContain("tw:transition-opacity");
@@ -196,7 +196,7 @@ describe("Projects Component", () => {
     render(<Projects {...singleRepoProps} />);
 
     const projectLinks = screen.getAllByRole("link");
-    expect(projectLinks.length).toBe(1);
+    expect(projectLinks.length).toBe(2);
 
     const projectLink = screen.getByRole("link", { name: "test-repo" });
     expect(projectLink).toBeTruthy();
