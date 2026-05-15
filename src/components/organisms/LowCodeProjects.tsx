@@ -10,7 +10,7 @@ export default function LowCodeProjects({ projects }: ILowCodeProjectsProps) {
       <h2 className="tw:text-3xl">Low-code/No-code Projects</h2>
       <div className="tw:grid tw:grid-cols-1 tw:lg:grid-cols-2 tw:gap-4">
         {projects.map((project) => (
-          <N8NWorkflow key={project.id} workflow={project} />
+          <N8NWorkflow key={project.id} workflowKey={project.id} workflow={project} />
         ))}
       </div>
     </section>

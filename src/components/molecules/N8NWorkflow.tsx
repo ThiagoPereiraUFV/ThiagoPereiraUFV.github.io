@@ -7,15 +7,15 @@ if (typeof window !== "undefined") {
 }
 
 interface IN8NWorkflowProps {
-  key: string;
+  workflowKey: string;
   workflow: ILowCodeProject;
 }
 
-export default function N8NWorkflow({ key, workflow }: IN8NWorkflowProps) {
+export default function N8NWorkflow({ workflowKey, workflow }: IN8NWorkflowProps) {
   return (
     <div>
       <h3 className="tw:text-sm">{workflow.name}</h3>
-      <n8n-demo key={key} workflow={JSON.stringify(workflow)}></n8n-demo>
+      <n8n-demo data-key={workflowKey} workflow={JSON.stringify(workflow)}></n8n-demo>
     </div>
   );
 }

@@ -2,12 +2,14 @@ import About from "@/components/organisms/About";
 import Footer from "@/components/organisms/Footer";
 import Header from "@/components/organisms/Header";
 import Projects from "@/components/organisms/Projects";
-import LowCodeProjects from "@/components/organisms/LowCodeProjects";
+// import LowCodeProjects from "@/components/organisms/LowCodeProjects";
+import WebsiteProjects from "@/components/organisms/WebsiteProjects";
 import { userData } from "@/helpers/userdata";
+import { websiteProjects } from "@/helpers/websitedata";
 import {
   getGithubData,
   getGithubRawFile,
-  getLowCodeProjects,
+  // getLowCodeProjects,
 } from "@/lib/actions";
 
 export default async function Home() {
@@ -32,29 +34,32 @@ export default async function Home() {
   const data = {
     header: {
       title: profileName,
-      sections: ["About", "Projects", "Contact"],
+      sections: ["About", "Website Projects", "Projects", "Contact"],
     },
     about: {
       aboutUserData,
     },
     projects: {
-      repos: githubData.repos,
+      repos: githubData.repos || [],
     },
   };
 
-  const lowCodeProjectsData = await getLowCodeProjects();
+  // const lowCodeProjectsData = await getLowCodeProjects();
 
-  if ("error" in lowCodeProjectsData) {
-    return <div>{lowCodeProjectsData.error.message}</div>;
-  }
+  // if ("error" in lowCodeProjectsData) {
+  //   return <div>{lowCodeProjectsData.error.message}</div>;
+  // }
 
   return (
-    <main className="tw:grid tw:grid-cols-1 tw:gap-10 tw:py-4">
+    <main>
       <Header {...data.header} />
-      <About {...data.about} />
-      <Projects {...data.projects} />
-      <LowCodeProjects projects={lowCodeProjectsData} />
-      <Footer {...userData} />
+      <div className="tw:grid tw:grid-cols-1 tw:gap-24 tw:px-0 tw:p-0">
+        <About {...data.about} />
+        <WebsiteProjects websites={websiteProjects} />
+        <Projects {...data.projects} />
+        {/* <LowCodeProjects projects={lowCodeProjectsData} /> */}
+        <Footer {...userData} />
+      </div>
     </main>
   );
 }
