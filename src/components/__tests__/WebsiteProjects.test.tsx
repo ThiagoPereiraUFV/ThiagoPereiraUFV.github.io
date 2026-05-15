@@ -11,6 +11,22 @@ const mockResizeObserver = jest.fn(() => ({
 }));
 global.ResizeObserver = mockResizeObserver;
 
+// Mock IntersectionObserver — immediately signals intersection so iframe renders
+const mockIntersectionObserver = jest.fn(
+  (callback: IntersectionObserverCallback) => ({
+    observe: jest.fn((el: Element) => {
+      callback(
+        [{ isIntersecting: true, target: el } as IntersectionObserverEntry],
+        {} as IntersectionObserver,
+      );
+    }),
+    disconnect: jest.fn(),
+    unobserve: jest.fn(),
+  }),
+);
+global.IntersectionObserver =
+  mockIntersectionObserver as unknown as typeof IntersectionObserver;
+
 // Give elements a non-zero offsetWidth so scale > 0 and the iframe renders
 Object.defineProperty(HTMLElement.prototype, "offsetWidth", {
   configurable: true,

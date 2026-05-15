@@ -14,6 +14,7 @@ const DESKTOP_ASPECT_HEIGHT = Math.round(DESKTOP_WIDTH * (9 / 16)); // 1080px â€
 export default function WebsiteCard({ url, name }: IWebsiteProject) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0);
+  const [visible, setVisible] = useState(false);
   const rawId = useId().replace(/:/g, "");
   const animName = `wzp-${rawId}`;
   const duration = useRef(parseFloat((15 + Math.random() * 20).toFixed(1)));
@@ -25,12 +26,28 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
     const el = containerRef.current;
     if (!el) return;
 
+    // Only measure width for scaling
     const updateScale = () => setScale(el.offsetWidth / DESKTOP_WIDTH);
     updateScale();
+    const resizeObserver = new ResizeObserver(updateScale);
+    resizeObserver.observe(el);
 
-    const observer = new ResizeObserver(updateScale);
-    observer.observe(el);
-    return () => observer.disconnect();
+    // Load iframe only when card enters the viewport
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          intersectionObserver.disconnect();
+        }
+      },
+      { rootMargin: "200px" }, // start loading slightly before visible
+    );
+    intersectionObserver.observe(el);
+
+    return () => {
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -38,7 +55,7 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
       ref={containerRef}
       className="tw:relative tw:rounded-lg tw:overflow-hidden tw:border tw:aspect-video tw:bg-gray-100"
     >
-      {scale > 0 && (
+      {scale > 0 && visible && (
         // Scale wrapper: shrinks 1920Ã—1080 to fit the card, no animation here
         <>
           <style>{keyframes}</style>
