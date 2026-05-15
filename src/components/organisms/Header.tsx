@@ -12,12 +12,12 @@ export default function Header(props: IHeaderProps) {
         WebkitBackdropFilter: "blur(16px)",
       }}
     >
-      <div className="tw:flex tw:items-center tw:justify-between tw:gap-4 tw:px-6 tw:lg:px-12 tw:py-4">
-        <h1 className="tw:text-xl tw:font-bold tw:tracking-tight">
+      <div className="tw:flex tw:flex-col tw:items-center tw:gap-2 tw:px-6 tw:py-3 tw:sm:flex-row tw:sm:justify-between tw:sm:gap-4 tw:lg:px-12 tw:sm:py-4">
+        <h1 className="tw:text-xl tw:font-bold tw:tracking-tight tw:whitespace-nowrap">
           <span className="gradient-text">{props.title}</span>
         </h1>
         <nav>
-          <ul className="tw:flex tw:flex-wrap tw:justify-end tw:gap-1">
+          <ul className="tw:flex tw:flex-wrap tw:justify-center tw:gap-1 tw:sm:justify-end">
             {props.sections.map((section, index) => (
               <li key={index}>
                 <Link
