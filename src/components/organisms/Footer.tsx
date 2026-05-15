@@ -24,32 +24,65 @@ export default function Footer({ profileName, contact }: IFooterProps) {
   return (
     <footer
       id="contact"
-      className="tw:grid tw:grid-cols-1 tw:gap-8 tw:text-center"
+      className="tw:scroll-mt-20"
+      style={{ borderTop: "1px solid var(--card-border)" }}
     >
-      <p className="tw:text-2xl">You can reach me via:</p>
-      <div className="tw:flex tw:flex-wrap tw:justify-center tw:gap-4">
-        {Object.entries(contact).map(([key, c]) => (
-          <Link
-            key={key}
-            href={c.url}
-            target="_blank"
-            className="tw:transition tw:ease-in-out tw:duration-300 tw:hover:-translate-y-0.5 tw:hover:-translate-x-0.5"
+      <div className="tw:grid tw:grid-cols-1 tw:gap-10 tw:px-6 tw:lg:px-16 tw:py-16 tw:text-center">
+        <div>
+          <p
+            className="tw:text-xs tw:font-semibold tw:uppercase tw:tracking-widest tw:mb-3"
+            style={{ color: "var(--muted)" }}
           >
-            <Image
-              className="tw:text-white"
-              src={isDarkMode ? c.iconDark : c.icon}
-              alt={capitalizeFirstLetter(key)}
-              title={capitalizeFirstLetter(key)}
-              width={75}
-              height={75}
-            />
-          </Link>
-        ))}
+            Get in touch
+          </p>
+          <h2 className="tw:text-3xl tw:font-bold tw:tracking-tight">
+            Let&apos;s work together
+          </h2>
+        </div>
+        <div className="tw:flex tw:flex-wrap tw:justify-center tw:gap-5">
+          {Object.entries(contact).map(([key, c]) => (
+            <Link
+              key={key}
+              href={c.url}
+              target="_blank"
+              className="tw:flex tw:flex-col tw:items-center tw:gap-2 tw:group"
+            >
+              <div
+                className="tw:rounded-xl tw:p-3 tw:transition-all tw:duration-300 tw:group-hover:scale-110"
+                style={{
+                  background: "var(--card-bg)",
+                  border: "1px solid var(--card-border)",
+                  boxShadow: "var(--card-shadow)",
+                }}
+              >
+                <Image
+                  src={isDarkMode ? c.iconDark : c.icon}
+                  alt={capitalizeFirstLetter(key)}
+                  title={capitalizeFirstLetter(key)}
+                  width={36}
+                  height={36}
+                />
+              </div>
+              <span
+                className="tw:text-xs tw:font-medium"
+                style={{ color: "var(--muted)" }}
+              >
+                {capitalizeFirstLetter(key)}
+              </span>
+            </Link>
+          ))}
+        </div>
+        <small style={{ color: "var(--muted)" }}>
+          Built with ❤️ by{" "}
+          <Link
+            href={contact.github.url}
+            className="tw:transition-opacity tw:hover:opacity-70"
+          >
+            {profileName}
+          </Link>{" "}
+          | © {new Date().getFullYear()} all rights reserved
+        </small>
       </div>
-      <small>
-        Built with ❤️ by <Link href={contact.github.url}>{profileName}</Link> |
-        © {new Date().getFullYear()} all rights reserved
-      </small>
     </footer>
   );
 }

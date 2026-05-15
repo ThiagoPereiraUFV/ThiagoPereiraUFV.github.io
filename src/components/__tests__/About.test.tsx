@@ -1,78 +1,86 @@
-import { render } from '@testing-library/react';
-import About from '../organisms/About';
-import { IAboutProps } from '@/interfaces/about';
+import { render } from "@testing-library/react";
+import About from "../organisms/About";
+import { IAboutProps } from "@/interfaces/about";
 
-describe('About Component', () => {
-  it('should render about section with HTML content', () => {
+describe("About Component", () => {
+  it("should render about section with HTML content", () => {
     const props: IAboutProps = {
-      aboutUserData: '<h2>About Me</h2><p>I am a developer</p>'
+      aboutUserData: "<h2>About Me</h2><p>I am a developer</p>",
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
+
+    const section = container.querySelector("#about");
     expect(section).toBeInTheDocument();
-    expect(section).toHaveAttribute('id', 'about');
-    expect(section?.tagName.toLowerCase()).toBe('section');
+    expect(section).toHaveAttribute("id", "about");
+    expect(section?.tagName.toLowerCase()).toBe("section");
   });
 
-  it('should render HTML content using dangerouslySetInnerHTML', () => {
+  it("should render HTML content using dangerouslySetInnerHTML", () => {
     const props: IAboutProps = {
-      aboutUserData: '<h2>John Doe</h2><p>Full Stack Developer with 5 years of experience</p>'
+      aboutUserData:
+        "<h2>John Doe</h2><p>Full Stack Developer with 5 years of experience</p>",
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
-    expect(section?.innerHTML).toBe('<h2>John Doe</h2><p>Full Stack Developer with 5 years of experience</p>');
+
+    const contentDiv = container.querySelector("#about .about-content");
+    expect(contentDiv?.innerHTML).toBe(
+      "<h2>John Doe</h2><p>Full Stack Developer with 5 years of experience</p>",
+    );
   });
 
-  it('should handle empty aboutUserData', () => {
+  it("should handle empty aboutUserData", () => {
     const props: IAboutProps = {
-      aboutUserData: ''
+      aboutUserData: "",
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
+
+    const section = container.querySelector("#about");
     expect(section).toBeInTheDocument();
-    expect(section?.innerHTML).toBe('');
+    const contentDiv = container.querySelector("#about .about-content");
+    expect(contentDiv?.innerHTML).toBe("");
   });
 
-  it('should handle plain text content', () => {
+  it("should handle plain text content", () => {
     const props: IAboutProps = {
-      aboutUserData: 'This is plain text about me'
+      aboutUserData: "This is plain text about me",
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
-    expect(section?.innerHTML).toBe('This is plain text about me');
+
+    const contentDiv = container.querySelector("#about .about-content");
+    expect(contentDiv?.innerHTML).toBe("This is plain text about me");
   });
 
-  it('should handle markdown-like content', () => {
+  it("should handle markdown-like content", () => {
     const props: IAboutProps = {
-      aboutUserData: '# About Me\n\nI am a **developer** who loves coding!'
+      aboutUserData: "# About Me\n\nI am a **developer** who loves coding!",
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
-    expect(section?.innerHTML).toBe('# About Me\n\nI am a **developer** who loves coding!');
+
+    const contentDiv = container.querySelector("#about .about-content");
+    expect(contentDiv?.innerHTML).toBe(
+      "# About Me\n\nI am a **developer** who loves coding!",
+    );
   });
 
-  it('should render with correct CSS classes', () => {
+  it("should render with correct CSS classes", () => {
     const props: IAboutProps = {
-      aboutUserData: '<p>Test content</p>'
+      aboutUserData: "<p>Test content</p>",
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
-    expect(section).toHaveClass('tw:px-10', 'tw:lg:px-20');
+
+    const section = container.querySelector("#about");
+    expect(section).toHaveClass("tw:px-6", "tw:lg:px-16", "tw:min-h-screen");
+    const contentDiv = container.querySelector("#about .about-content");
+    expect(contentDiv).toBeInTheDocument();
   });
 
-  it('should handle complex HTML structures', () => {
+  it("should handle complex HTML structures", () => {
     const props: IAboutProps = {
       aboutUserData: `
         <div>
@@ -83,65 +91,68 @@ describe('About Component', () => {
           </ul>
           <p>Contact: <a href="mailto:test@example.com">test@example.com</a></p>
         </div>
-      `
+      `,
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
+
+    const section = container.querySelector("#about");
     expect(section).toBeInTheDocument();
-    
+
     // Check that HTML elements are properly rendered
-    const heading = section?.querySelector('h2');
-    const list = section?.querySelector('ul');
-    const listItems = section?.querySelectorAll('li');
-    const link = section?.querySelector('a');
-    
+    const heading = section?.querySelector("h2");
+    const list = section?.querySelector("ul");
+    const listItems = section?.querySelectorAll("li");
+    const link = section?.querySelector("a");
+
     expect(heading).toBeInTheDocument();
     expect(list).toBeInTheDocument();
     expect(listItems).toHaveLength(2);
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', 'mailto:test@example.com');
+    expect(link).toHaveAttribute("href", "mailto:test@example.com");
   });
 
-  it('should handle HTML with attributes', () => {
+  it("should handle HTML with attributes", () => {
     const props: IAboutProps = {
-      aboutUserData: '<p class="highlight" data-test="about-text">Welcome to my portfolio</p>'
+      aboutUserData:
+        '<p class="highlight" data-test="about-text">Welcome to my portfolio</p>',
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
-    const paragraph = section?.querySelector('p');
-    
-    expect(paragraph).toHaveClass('highlight');
-    expect(paragraph).toHaveAttribute('data-test', 'about-text');
+
+    const section = container.querySelector("#about");
+    const paragraph = section?.querySelector("p");
+
+    expect(paragraph).toHaveClass("highlight");
+    expect(paragraph).toHaveAttribute("data-test", "about-text");
   });
 
-  it('should be accessible as a section element', () => {
+  it("should be accessible as a section element", () => {
     const props: IAboutProps = {
-      aboutUserData: '<h2>Accessibility Test</h2>'
+      aboutUserData: "<h2>Accessibility Test</h2>",
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('section#about');
+
+    const section = container.querySelector("section#about");
     expect(section).toBeInTheDocument();
-    expect(section).toHaveAttribute('id', 'about');
+    expect(section).toHaveAttribute("id", "about");
   });
 
-  it('should handle special characters in content', () => {
+  it("should handle special characters in content", () => {
     const props: IAboutProps = {
-      aboutUserData: '<p>Special chars: &amp; &lt; &gt; " \'</p>'
+      aboutUserData: "<p>Special chars: &amp; &lt; &gt; \" '</p>",
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
-    expect(section?.innerHTML).toBe('<p>Special chars: &amp; &lt; &gt; " \'</p>');
+
+    const contentDiv = container.querySelector("#about .about-content");
+    expect(contentDiv?.innerHTML).toBe(
+      "<p>Special chars: &amp; &lt; &gt; \" '</p>",
+    );
   });
 
-  it('should maintain HTML structure integrity', () => {
+  it("should maintain HTML structure integrity", () => {
     const complexHTML = `
       <article>
         <header>
@@ -159,23 +170,23 @@ describe('About Component', () => {
     `;
 
     const props: IAboutProps = {
-      aboutUserData: complexHTML
+      aboutUserData: complexHTML,
     };
 
     const { container } = render(<About {...props} />);
-    
-    const section = container.querySelector('#about');
-    const article = section?.querySelector('article');
-    const header = section?.querySelector('header');
-    const footer = section?.querySelector('footer');
-    
+
+    const section = container.querySelector("#about");
+    const article = section?.querySelector("article");
+    const header = section?.querySelector("header");
+    const footer = section?.querySelector("footer");
+
     expect(article).toBeInTheDocument();
     expect(header).toBeInTheDocument();
     expect(footer).toBeInTheDocument();
-    
-    const link = section?.querySelector('a');
-    expect(link).toHaveAttribute('href', 'https://github.com/johndoe');
-    expect(link).toHaveAttribute('target', '_blank');
-    expect(link).toHaveAttribute('rel', 'noopener');
+
+    const link = section?.querySelector("a");
+    expect(link).toHaveAttribute("href", "https://github.com/johndoe");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener");
   });
 });

@@ -51,13 +51,15 @@ export default async function Home() {
   // }
 
   return (
-    <main className="tw:grid tw:grid-cols-1 tw:gap-10 tw:py-4">
+    <main>
       <Header {...data.header} />
-      <About {...data.about} />
-      <WebsiteProjects websites={websiteProjects} />
-      <Projects {...data.projects} />
-      {/* <LowCodeProjects projects={lowCodeProjectsData} /> */}
-      <Footer {...userData} />
+      <div className="tw:grid tw:grid-cols-1 tw:gap-24 tw:px-0 tw:py-16 tw:pb-0">
+        <About {...data.about} />
+        <WebsiteProjects websites={websiteProjects} />
+        <Projects {...data.projects} />
+        {/* <LowCodeProjects projects={lowCodeProjectsData} /> */}
+        <Footer {...userData} />
+      </div>
     </main>
   );
 }

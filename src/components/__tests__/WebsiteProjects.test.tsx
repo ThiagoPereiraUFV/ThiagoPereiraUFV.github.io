@@ -68,8 +68,8 @@ describe("WebsiteProjects Component", () => {
 
     const section = container.querySelector("#website-projects");
     expect(section?.className).toContain("tw:grid");
-    expect(section?.className).toContain("tw:px-10");
-    expect(section?.className).toContain("tw:lg:px-20");
+    expect(section?.className).toContain("tw:px-6");
+    expect(section?.className).toContain("tw:lg:px-16");
 
     const grid = container.querySelector(
       ".tw\\:grid.tw\\:grid-cols-1.tw\\:lg\\:grid-cols-2",
@@ -130,8 +130,11 @@ describe("WebsiteCard Component", () => {
       ));
     });
 
-    // Scale wrapper: 1920×1080
-    const wrapper = container.querySelector("div[style]") as HTMLElement;
+    // Scale wrapper: 1920×1080 — find by width style (the inner scale wrapper, not container)
+    const allStyledDivs = container.querySelectorAll("div[style]");
+    const wrapper = Array.from(allStyledDivs).find(
+      (el) => (el as HTMLElement).style.width === "1920px",
+    ) as HTMLElement;
     expect(wrapper).toBeTruthy();
     expect(wrapper.style.width).toBe("1920px");
     expect(wrapper.style.height).toBe("1080px");

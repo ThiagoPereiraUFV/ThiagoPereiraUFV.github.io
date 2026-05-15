@@ -60,7 +60,24 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
   return (
     <div
       ref={containerRef}
-      className="tw:relative tw:rounded-lg tw:overflow-hidden tw:border tw:aspect-video tw:bg-gray-100"
+      className="tw:relative tw:rounded-xl tw:overflow-hidden tw:aspect-video"
+      style={{
+        background: "var(--card-bg)",
+        border: "1px solid var(--card-border)",
+        boxShadow: "var(--card-shadow)",
+        transition: "box-shadow 0.3s ease, transform 0.3s ease",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLDivElement).style.boxShadow =
+          "var(--card-shadow-hover)";
+        (e.currentTarget as HTMLDivElement).style.transform =
+          "translateY(-3px)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLDivElement).style.boxShadow =
+          "var(--card-shadow)";
+        (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
+      }}
     >
       {scale > 0 && visible && (
         // Scale wrapper: shrinks 1920×1080 to fit the card, no animation here
@@ -103,7 +120,15 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
           }
         }}
       >
-        <span className="tw:w-full tw:px-3 tw:py-1.5 tw:text-sm tw:font-medium tw:bg-black/60 tw:text-white tw:truncate">
+        <span
+          className="tw:w-full tw:px-4 tw:py-2 tw:text-sm tw:font-semibold tw:truncate tw:tracking-tight"
+          style={{
+            background: "rgba(0,0,0,0.7)",
+            color: "#fff",
+            backdropFilter: "blur(4px)",
+            WebkitBackdropFilter: "blur(4px)",
+          }}
+        >
           {name}
         </span>
       </div>

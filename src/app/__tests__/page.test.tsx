@@ -232,10 +232,12 @@ describe("Home Page", () => {
     const { container } = render(await Home());
 
     const main = container.querySelector("main");
-    expect(main?.className).toContain("tw:grid");
-    expect(main?.className).toContain("tw:grid-cols-1");
-    expect(main?.className).toContain("tw:gap-10");
-    expect(main?.className).toContain("tw:py-4");
+    expect(main).toBeInTheDocument();
+    // Layout is a full-width grid div directly inside main (after the mocked Header)
+    const allDivs = main ? Array.from(main.querySelectorAll(":scope > div")) : [];
+    const layoutDiv = allDivs.find((el) => el.className.includes("tw:grid"));
+    expect(layoutDiv).toBeTruthy();
+    expect(layoutDiv?.className).toContain("tw:gap-24");
   });
 
   it("should handle empty repositories array", async () => {
