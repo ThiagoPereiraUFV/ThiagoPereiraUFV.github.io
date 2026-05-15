@@ -3,7 +3,10 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { IWebsiteProject } from "@/interfaces/website-projects";
 import {
+  ANIMATION_START_DELAY,
   buildKeyframes,
+  DURATION_MAX,
+  DURATION_MIN,
   QUADRANTS,
   shuffle,
 } from "@/helpers/websiteCardAnimation";
@@ -17,7 +20,11 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
   const [visible, setVisible] = useState(false);
   const rawId = useId().replace(/:/g, "");
   const animName = `wzp-${rawId}`;
-  const duration = useRef(parseFloat((15 + Math.random() * 20).toFixed(1)));
+  const duration = useRef(
+    parseFloat(
+      (DURATION_MIN + Math.random() * (DURATION_MAX - DURATION_MIN)).toFixed(1),
+    ),
+  );
   const quadrants = useRef(shuffle(QUADRANTS));
 
   const keyframes = buildKeyframes(animName, quadrants.current);
@@ -77,7 +84,7 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
                 width: `${DESKTOP_WIDTH}px`,
                 height: `${DESKTOP_ASPECT_HEIGHT}px`,
                 transformOrigin: "top left",
-                animation: `${animName} ${duration.current}s linear infinite`,
+                animation: `${animName} ${duration.current}s ${ANIMATION_START_DELAY}s linear infinite`,
               }}
               loading="lazy"
             />
