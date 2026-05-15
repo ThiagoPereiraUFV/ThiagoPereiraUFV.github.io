@@ -8,6 +8,7 @@ import githubIconDark from "@/assets/icons/githubDark.svg";
 export const userData = {
 	username: "ThiagoPereiraUFV",
 	profileName: "Thiago Pereira",
+	siteUrl: "https://thiagopereiraUFV.github.io",
 	contact: {
 		email: {
 			url: 'mailto:thiago.marinho.pereira.98@gmail.com',
