@@ -6,7 +6,7 @@ export const websiteProjects: IWebsiteProject[] = [
 		name: "Tishman Speyer Gestora",
 	},
 	{ url: "https://tishmanspeyer.com.br", name: "Tishman Speyer Brasil" },
-	{ url: "https://buscaileiloes.com.br", name: "BuscAI lLiloes" },
+	{ url: "https://buscaileiloes.com.br", name: "BuscAI Leilões" },
 	{ url: "https://lp.atena.chat", name: "Atena Chat" },
 	{ url: "https://easyvaluation.com.br", name: "Easy Valuation" },
 	{
