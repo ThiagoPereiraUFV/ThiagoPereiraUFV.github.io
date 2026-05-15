@@ -12,7 +12,7 @@ The codebase follows a layered architecture with SOLID principles:
 
 ```
 src/
-├── app/              # Next.js App Router (layout, page, globals.css, robots.ts, sitemap.ts, icon.tsx, apple-icon.tsx)
+├── app/              # Next.js App Router (layout, page, globals.css, robots.ts, sitemap.ts, icon.tsx, apple-icon.tsx, opengraph-image.tsx, twitter-image.tsx)
 ├── assets/           # Static assets (SVG icons: email, linkedin, github — light & dark variants)
 ├── components/       # UI components organized by Atomic Design
 │   ├── atoms/        # WebsiteCard.tsx, WebsiteSlide.tsx
@@ -26,10 +26,10 @@ src/
 │   ├── websitedata.ts # websiteProjects array
 │   └── websiteCardAnimation.ts # Animation constants and keyframe builder for WebsiteCard
 ├── interfaces/       # TypeScript interfaces for all data shapes
-│   ├── index.ts      # IData (top-level page data shape)
+│   ├── index.ts      # IData (top-level page data shape; header.title is a string literal type)
 │   ├── about.ts      # IAboutProps
 │   ├── actions.ts    # IGetGithubRawFileProps
-│   ├── footer.ts     # IFooterProps
+│   ├── footer.ts     # IFooterProps (username, profileName, contact), IContactItem, IContact, UserDataContact
 │   ├── github.ts     # IGithubUserData, IGithubUserRepo
 │   ├── header.ts     # IHeaderProps
 │   ├── low-code-projects.ts  # ILowCodeProject, ILowCodeProjectsProps
@@ -80,7 +80,9 @@ page.tsx → helpers/pageData.ts (buildPageData) → lib/actions.ts → ServiceF
 <Footer />        // contact section with dark-mode-aware icons
 ```
 
-`LowCodeProjects` organism exists but is **not** rendered in `page.tsx`.
+- `Footer` is rendered as `<Footer {...userData} />` — it receives `username`, `profileName`, and `contact` directly from the `userData` const, not from `IData`.
+- `About` renders README.md content via `dangerouslySetInnerHTML`; styled with the `.about-content` CSS class.
+- `LowCodeProjects` organism exists but is **not** rendered in `page.tsx`.
 
 ---
 
@@ -92,6 +94,7 @@ page.tsx → helpers/pageData.ts (buildPageData) → lib/actions.ts → ServiceF
 - Generic `IApiResult<T>` wraps all API responses: `{ data?: T; error?: IApiError }`.
 - Return `IErrorResponse` (`{ error: IApiError }`) on failure; check with `"error" in result`.
 - `IGithubDataResponse` is the return type of `getGithubData` — merges `IGithubUserData` fields with a `repos` array and an optional `error`.
+- `IData.header.title` is typed as a string literal `"Thiago Pereira"` (not a plain `string`).
 
 ---
 
@@ -106,6 +109,12 @@ page.tsx → helpers/pageData.ts (buildPageData) → lib/actions.ts → ServiceF
   - `--card-bg`, `--card-border`, `--card-shadow`, `--card-shadow-hover`
   - `--accent-start`, `--accent-end`
   - `--header-bg`, `--header-border`
+- Global CSS utility classes (defined in `globals.css`, **not** Tailwind):
+  - `.gradient-text` — accent gradient applied to text via `background-clip`
+  - `.portfolio-card` — frosted-glass card style with hover lift effect
+  - `.section-heading` — styled `h2` with underline accent
+  - `.lang-badge` — language pill badge used in `Projects`
+  - `.about-content` — typography and link styles for rendered README.md HTML
 - Fonts: Geist Sans (`--font-geist-sans`) and Geist Mono (`--font-geist-mono`) loaded as local fonts in `layout.tsx`.
 
 ---
