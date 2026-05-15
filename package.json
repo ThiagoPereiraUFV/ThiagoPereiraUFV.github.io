@@ -6,6 +6,7 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
+    "serve": "serve out",
     "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -16,7 +17,8 @@
     "@n8n_io/n8n-demo-component": "^1.0.18",
     "next": "15.5.2",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "serve": "^14.2.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.15",
