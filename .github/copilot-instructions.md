@@ -15,11 +15,11 @@ src/
 ├── app/              # Next.js App Router (layout, page, global styles)
 ├── assets/           # Static assets (SVG icons)
 ├── components/       # UI components organized by Atomic Design
-│   ├── atoms/        # Smallest reusable UI primitives
+│   ├── atoms/        # Smallest reusable UI primitives (e.g., WebsiteCard)
 │   ├── molecules/    # Composed atoms (e.g., N8NWorkflow)
-│   └── organisms/    # Full sections (Header, Footer, About, Projects, LowCodeProjects)
+│   └── organisms/    # Full sections (Header, Footer, About, Projects, LowCodeProjects, WebsiteProjects)
 ├── factories/        # ServiceFactory — dependency injection container
-├── helpers/          # Pure utility functions and static data (userdata, strings)
+├── helpers/          # Pure utility functions and static data (userdata, strings, websitedata, websiteCardAnimation)
 ├── interfaces/       # TypeScript interfaces for all data shapes
 ├── lib/              # Next.js server actions (thin wrappers over repositories)
 ├── repositories/     # Data access layer (GithubRepository, LowCodeRepository)
@@ -62,9 +62,9 @@ page.tsx → lib/actions.ts → ServiceFactory → Repository → ApiService →
 
 ## Styling
 
-- Tailwind CSS v4 with the `tw:` prefix (configured in `tailwind.config.ts`).
-- All Tailwind utility classes must use the `tw:` prefix — e.g., `tw:flex`, `tw:px-4`.
-- Responsive variants follow the pattern `tw:lg:grid-cols-3`.
+- Tailwind CSS v4 with the `tw-` prefix (configured in `tailwind.config.ts`).
+- All Tailwind utility classes must use the `tw-` prefix — e.g., `tw-flex`, `tw-px-4`.
+- Responsive variants follow the pattern `tw-lg:grid-cols-3`.
 - No CSS Modules; global styles are in `src/app/globals.css`.
 
 ---
@@ -85,9 +85,9 @@ page.tsx → lib/actions.ts → ServiceFactory → Repository → ApiService →
 
 ```bash
 yarn test                # run once
-yarn test:watch      # watch mode
-yarn test:coverage   # with coverage report
-yarn test:ci         # CI mode (--passWithNoTests)
+yarn test:watch          # watch mode
+yarn test:coverage       # with coverage report
+yarn test:ci             # CI mode (--passWithNoTests)
 ```
 
 ---
@@ -114,6 +114,7 @@ Use `ServiceFactory` to obtain repository instances. For tests, inject mocks via
 
 ```ts
 ServiceFactory.setGithubRepository(mockRepo);
+ServiceFactory.setLowCodeRepository(mockRepo);
 // ... run test ...
 ServiceFactory.reset();
 ```
@@ -130,5 +131,5 @@ Personal data (username, contact links, icons) is centralized in `src/helpers/us
 yarn dev      # development server (Turbopack)
 yarn build    # production build (static export)
 yarn lint     # ESLint
-yarn test         # Jest
+yarn test     # Jest
 ```
