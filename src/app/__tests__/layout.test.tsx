@@ -87,29 +87,77 @@ describe("RootLayout", () => {
 describe("Layout Metadata", () => {
   it("should export correct metadata object", () => {
     expect(metadata).toBeDefined();
-    expect(metadata.title).toBe("Thiago Pereira - Portfolio");
-    expect(metadata.description).toBe("Portfolio of Thiago Pereira");
+    expect((metadata.title as { default: string }).default).toBe(
+      "Thiago Pereira - Software Engineer Portfolio",
+    );
+    expect(metadata.description).toContain("Portfolio of Thiago Pereira");
+  });
+
+  it("should have title template", () => {
+    expect((metadata.title as { template: string }).template).toBe(
+      "%s | Thiago Pereira",
+    );
   });
 
   it("should include correct keywords", () => {
-    expect(metadata.keywords).toEqual([
-      "Portfolio",
-      "Thiago Pereira",
-      "Software Engineer",
-    ]);
+    expect(metadata.keywords).toContain("Portfolio");
+    expect(metadata.keywords).toContain("Thiago Pereira");
+    expect(metadata.keywords).toContain("Software Engineer");
   });
 
   it("should have all required metadata properties", () => {
     expect(metadata).toHaveProperty("title");
     expect(metadata).toHaveProperty("description");
     expect(metadata).toHaveProperty("keywords");
+    expect(metadata).toHaveProperty("openGraph");
+    expect(metadata).toHaveProperty("twitter");
+    expect(metadata).toHaveProperty("robots");
+    expect(metadata).toHaveProperty("authors");
   });
 
   it("should use userData in metadata generation", () => {
-    // The metadata should reflect the userData values
-    expect(metadata.title).toContain("Thiago Pereira");
+    const title = metadata.title as { default: string };
+    expect(title.default).toContain("Thiago Pereira");
     expect(metadata.description).toContain("Thiago Pereira");
     expect(metadata.keywords).toContain("Thiago Pereira");
+  });
+
+  it("should have correct openGraph metadata", () => {
+    expect(metadata.openGraph).toBeDefined();
+    const og = metadata.openGraph as {
+      type: string;
+      locale: string;
+      siteName: string;
+      images: { url: string; width: number; height: number; alt: string }[];
+    };
+    expect(og.type).toBe("website");
+    expect(og.locale).toBe("en_US");
+    expect(og.siteName).toContain("Thiago Pereira");
+    expect(og.images).toHaveLength(1);
+    expect(og.images[0].width).toBe(1200);
+    expect(og.images[0].height).toBe(630);
+    expect(og.images[0].alt).toContain("Thiago Pereira");
+  });
+
+  it("should have correct twitter metadata", () => {
+    expect(metadata.twitter).toBeDefined();
+    const tw = metadata.twitter as {
+      card: string;
+      title: string;
+      images: { url: string; width: number; height: number; alt: string }[];
+    };
+    expect(tw.card).toBe("summary_large_image");
+    expect(tw.title).toContain("Thiago Pereira");
+    expect(tw.images).toHaveLength(1);
+    expect(tw.images[0].width).toBe(1200);
+    expect(tw.images[0].height).toBe(600);
+  });
+
+  it("should configure robots correctly", () => {
+    expect(metadata.robots).toBeDefined();
+    const robots = metadata.robots as { index: boolean; follow: boolean };
+    expect(robots.index).toBe(true);
+    expect(robots.follow).toBe(true);
   });
 });
 
