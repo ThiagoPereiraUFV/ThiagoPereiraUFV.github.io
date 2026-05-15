@@ -1,23 +1,23 @@
-const nextJest = require('next/jest')
+import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({
-  dir: './',
-})
+  dir: "./",
+});
 
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  testEnvironment: "jsdom",
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
   collectCoverage: true,
-  coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov', 'html'],
+  coverageDirectory: "coverage",
+  coverageReporters: ["text", "lcov", "html"],
   collectCoverageFrom: [
-    'src/**/*.{js,ts,jsx,tsx}',
-    '!src/**/*.d.ts',
-    '!src/app/fonts/**',
-    '!src/assets/**',
+    "src/**/*.{js,ts,jsx,tsx}",
+    "!src/**/*.d.ts",
+    "!src/app/fonts/**",
+    "!src/assets/**",
   ],
   coverageThreshold: {
     global: {
@@ -28,14 +28,14 @@ const customJestConfig = {
     },
   },
   testMatch: [
-    '<rootDir>/src/**/__tests__/**/*.{js,ts,tsx}',
-    '<rootDir>/src/**/*.{test,spec}.{js,ts,tsx}',
+    "<rootDir>/src/**/__tests__/**/*.{js,ts,tsx}",
+    "<rootDir>/src/**/*.{test,spec}.{js,ts,tsx}",
   ],
-  moduleDirectories: ['node_modules', '<rootDir>/'],
+  moduleDirectories: ["node_modules", "<rootDir>/"],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+    "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-}
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+};
 
-module.exports = createJestConfig(customJestConfig)
+export default createJestConfig(customJestConfig);
