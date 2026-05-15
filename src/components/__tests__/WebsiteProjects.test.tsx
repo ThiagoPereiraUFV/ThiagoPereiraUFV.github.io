@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import WebsiteProjects from "../organisms/WebsiteProjects";
 import WebsiteCard from "../atoms/WebsiteCard";
+import WebsiteSlide from "../atoms/WebsiteSlide";
 import { IWebsiteProject } from "@/interfaces/website-projects";
 
 // Mock ResizeObserver
@@ -53,28 +54,37 @@ describe("WebsiteProjects Component", () => {
     expect(heading.textContent).toBe("Website Projects");
   });
 
-  it("should render all website cards", async () => {
+  it("should render nav buttons for all websites", async () => {
     await act(async () => {
       render(<WebsiteProjects websites={mockWebsites} />);
     });
 
     mockWebsites.forEach(({ name }) => {
-      expect(screen.getByTitle(name)).toBeTruthy();
+      expect(
+        screen.getByRole("button", { name: `Go to ${name}` }),
+      ).toBeTruthy();
     });
   });
 
-  it("should render with correct CSS classes", () => {
+  it("should render the first website slide as active", async () => {
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(<WebsiteProjects websites={mockWebsites} />));
+    });
+
+    const iframe = container.querySelector("iframe");
+    expect(iframe).toBeTruthy();
+    expect(iframe?.getAttribute("title")).toBe(mockWebsites[0].name);
+  });
+
+  it("should render with sticky scroll structure", () => {
     const { container } = render(<WebsiteProjects websites={mockWebsites} />);
 
     const section = container.querySelector("#website-projects");
-    expect(section?.className).toContain("tw:grid");
-    expect(section?.className).toContain("tw:px-6");
-    expect(section?.className).toContain("tw:lg:px-16");
+    expect(section?.getAttribute("style")).toContain("vh");
 
-    const grid = container.querySelector(
-      ".tw\\:grid.tw\\:grid-cols-1.tw\\:lg\\:grid-cols-2",
-    );
-    expect(grid).toBeTruthy();
+    const sticky = container.querySelector(".tw\\:sticky");
+    expect(sticky).toBeTruthy();
   });
 
   it("should render empty state without error", () => {
@@ -218,5 +228,158 @@ describe("WebsiteCard Component", () => {
     fireEvent.mouseLeave(card);
     expect(card.style.boxShadow).toBe("var(--card-shadow)");
     expect(card.style.transform).toBe("translateY(0)");
+  });
+});
+
+describe("WebsiteSlide Component", () => {
+  it("should render iframe when shouldLoad and ready", async () => {
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(
+        <WebsiteSlide
+          url="https://example.com"
+          name="Example"
+          isActive={true}
+          shouldLoad={true}
+          index={0}
+          total={3}
+        />,
+      ));
+    });
+
+    const iframe = container.querySelector("iframe");
+    expect(iframe?.getAttribute("src")).toBe("https://example.com");
+    expect(iframe?.getAttribute("title")).toBe("Example");
+  });
+
+  it("should not render iframe when shouldLoad is false", () => {
+    const { container } = render(
+      <WebsiteSlide
+        url="https://example.com"
+        name="Example"
+        isActive={false}
+        shouldLoad={false}
+        index={0}
+        total={3}
+      />,
+    );
+
+    expect(container.querySelector("iframe")).toBeNull();
+  });
+
+  it("should render site name and counter", () => {
+    render(
+      <WebsiteSlide
+        url="https://example.com"
+        name="My Portfolio"
+        isActive={true}
+        shouldLoad={false}
+        index={1}
+        total={3}
+      />,
+    );
+
+    expect(screen.getByText("My Portfolio")).toBeTruthy();
+  });
+
+  it("should apply hover effects on Visit Site link", async () => {
+    await act(async () => {
+      render(
+        <WebsiteSlide
+          url="https://example.com"
+          name="Example"
+          isActive={true}
+          shouldLoad={true}
+          index={0}
+          total={3}
+        />,
+      );
+    });
+
+    const visitLink = screen.getByRole("link", { name: "Visit Example" });
+
+    fireEvent.mouseEnter(visitLink);
+    expect((visitLink as HTMLAnchorElement).style.filter).toBe(
+      "brightness(1.15)",
+    );
+    expect((visitLink as HTMLAnchorElement).style.transform).toBe(
+      "scale(1.04)",
+    );
+
+    fireEvent.mouseLeave(visitLink);
+    expect((visitLink as HTMLAnchorElement).style.filter).toBe("brightness(1)");
+    expect((visitLink as HTMLAnchorElement).style.transform).toBe("scale(1)");
+  });
+});
+
+describe("WebsiteProjects scroll and navigation", () => {
+  beforeEach(() => {
+    window.scrollTo = jest.fn() as unknown as typeof window.scrollTo;
+  });
+
+  it("should update active index on scroll", async () => {
+    Object.defineProperty(window, "innerHeight", {
+      configurable: true,
+      value: 500,
+    });
+
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(<WebsiteProjects websites={mockWebsites} />));
+    });
+
+    const section = container.querySelector("#website-projects") as HTMLElement;
+
+    Object.defineProperty(section, "offsetHeight", {
+      configurable: true,
+      get: () => 3000,
+    });
+    jest.spyOn(section, "getBoundingClientRect").mockReturnValue({
+      top: -1500,
+      bottom: 1500,
+      left: 0,
+      right: 800,
+      width: 800,
+      height: 3000,
+      x: 0,
+      y: -1500,
+      toJSON: () => ({}),
+    } as DOMRect);
+
+    await act(async () => {
+      fireEvent.scroll(window);
+    });
+
+    expect(container.querySelector("#website-projects")).toBeTruthy();
+  });
+
+  it("should call window.scrollTo when nav button is clicked", async () => {
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(<WebsiteProjects websites={mockWebsites} />));
+    });
+
+    const section = container.querySelector("#website-projects") as HTMLElement;
+    jest.spyOn(section, "getBoundingClientRect").mockReturnValue({
+      top: 0,
+      bottom: 3000,
+      left: 0,
+      right: 800,
+      width: 800,
+      height: 3000,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    } as DOMRect);
+
+    const secondButton = screen.getByRole("button", {
+      name: `Go to ${mockWebsites[1].name}`,
+    });
+
+    await act(async () => {
+      fireEvent.click(secondButton);
+    });
+
+    expect(window.scrollTo).toHaveBeenCalled();
   });
 });

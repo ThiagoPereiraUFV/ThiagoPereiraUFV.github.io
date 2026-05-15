@@ -6,3 +6,12 @@ export interface IWebsiteProject {
 export interface IWebsiteProjectsProps {
 	websites: IWebsiteProject[];
 }
+
+export interface IWebsiteSlideProps {
+	url: string;
+	name: string;
+	isActive: boolean;
+	shouldLoad: boolean;
+	index: number;
+	total: number;
+}
