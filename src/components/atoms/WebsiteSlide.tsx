@@ -13,6 +13,15 @@ export default function WebsiteSlide({
 }: IWebsiteSlideProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
+  const [loadKey, setLoadKey] = useState(0);
+  const wasActive = useRef(false);
+
+  useEffect(() => {
+    if (isActive && !wasActive.current) {
+      setLoadKey((k) => k + 1);
+    }
+    wasActive.current = isActive;
+  }, [isActive]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -41,6 +50,7 @@ export default function WebsiteSlide({
       <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
         {shouldLoad && ready && (
           <iframe
+            key={loadKey}
             src={url}
             title={name}
             className="tw:pointer-events-none"
