@@ -202,4 +202,21 @@ describe("WebsiteCard Component", () => {
     const nameLabel = screen.getByText("My Portfolio");
     expect(nameLabel).toBeTruthy();
   });
+
+  it("should apply hover shadow on mouseenter and reset on mouseleave", () => {
+    const { container } = render(
+      <WebsiteCard url="https://example.com" name="Example Site" />,
+    );
+
+    const card = container.firstChild as HTMLElement;
+    expect(card).toBeTruthy();
+
+    fireEvent.mouseEnter(card);
+    expect(card.style.boxShadow).toBe("var(--card-shadow-hover)");
+    expect(card.style.transform).toBe("translateY(-3px)");
+
+    fireEvent.mouseLeave(card);
+    expect(card.style.boxShadow).toBe("var(--card-shadow)");
+    expect(card.style.transform).toBe("translateY(0)");
+  });
 });
