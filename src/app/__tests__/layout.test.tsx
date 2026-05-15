@@ -124,15 +124,21 @@ describe("Layout Metadata", () => {
 
   it("should have correct openGraph metadata", () => {
     expect(metadata.openGraph).toBeDefined();
-    expect(metadata.openGraph?.type).toBe("website");
-    expect(metadata.openGraph?.locale).toBe("en_US");
-    expect(metadata.openGraph?.siteName).toContain("Thiago Pereira");
+    const og = metadata.openGraph as {
+      type: string;
+      locale: string;
+      siteName: string;
+    };
+    expect(og.type).toBe("website");
+    expect(og.locale).toBe("en_US");
+    expect(og.siteName).toContain("Thiago Pereira");
   });
 
   it("should have correct twitter metadata", () => {
     expect(metadata.twitter).toBeDefined();
-    expect(metadata.twitter?.card).toBe("summary");
-    expect(metadata.twitter?.title).toContain("Thiago Pereira");
+    const tw = metadata.twitter as { card: string; title: string };
+    expect(tw.card).toBe("summary");
+    expect(tw.title).toContain("Thiago Pereira");
   });
 
   it("should configure robots correctly", () => {
