@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { userData } from "@/helpers/userdata";
 
+export const dynamic = "force-static";
 export const alt = `${userData.profileName} - Software Engineer Portfolio`;
 export const size = { width: 1200, height: 600 };
 export const contentType = "image/png";
