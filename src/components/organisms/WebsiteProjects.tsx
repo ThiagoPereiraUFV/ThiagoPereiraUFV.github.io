@@ -1,7 +1,14 @@
 "use client";
 
-import WebsiteCard from "@/components/atoms/WebsiteCard";
+import dynamic from "next/dynamic";
 import { IWebsiteProjectsProps } from "@/interfaces/website-projects";
+
+const WebsiteCard = dynamic(() => import("@/components/atoms/WebsiteCard"), {
+  ssr: false,
+  loading: () => (
+    <div className="tw:aspect-video tw:rounded-lg tw:border tw:bg-gray-100 tw:animate-pulse" />
+  ),
+});
 
 export default function WebsiteProjects({ websites }: IWebsiteProjectsProps) {
   return (

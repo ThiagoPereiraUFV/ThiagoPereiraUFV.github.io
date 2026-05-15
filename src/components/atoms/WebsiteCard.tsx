@@ -38,32 +38,34 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
       ref={containerRef}
       className="tw:relative tw:rounded-lg tw:overflow-hidden tw:border tw:aspect-video tw:bg-gray-100"
     >
-      <style>{keyframes}</style>
       {scale > 0 && (
         // Scale wrapper: shrinks 1920×1080 to fit the card, no animation here
-        <div
-          style={{
-            width: `${DESKTOP_WIDTH}px`,
-            height: `${DESKTOP_ASPECT_HEIGHT}px`,
-            transform: `scale(${scale})`,
-            transformOrigin: "top left",
-            overflow: "hidden",
-          }}
-        >
-          {/* Iframe: 1920×1080 — no distortion; zoom+pan animation only */}
-          <iframe
-            src={url}
-            title={name}
-            className="tw:pointer-events-none"
+        <>
+          <style>{keyframes}</style>
+          <div
             style={{
               width: `${DESKTOP_WIDTH}px`,
               height: `${DESKTOP_ASPECT_HEIGHT}px`,
+              transform: `scale(${scale})`,
               transformOrigin: "top left",
-              animation: `${animName} ${duration.current}s linear infinite`,
+              overflow: "hidden",
             }}
-            loading="lazy"
-          />
-        </div>
+          >
+            {/* Iframe: 1920×1080 — no distortion; zoom+pan animation only */}
+            <iframe
+              src={url}
+              title={name}
+              className="tw:pointer-events-none"
+              style={{
+                width: `${DESKTOP_WIDTH}px`,
+                height: `${DESKTOP_ASPECT_HEIGHT}px`,
+                transformOrigin: "top left",
+                animation: `${animName} ${duration.current}s linear infinite`,
+              }}
+              loading="lazy"
+            />
+          </div>
+        </>
       )}
       <div
         className="tw:absolute tw:inset-0 tw:cursor-pointer tw:flex tw:items-end tw:z-10"
