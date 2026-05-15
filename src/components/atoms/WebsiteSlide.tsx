@@ -3,9 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { IWebsiteSlideProps } from "@/interfaces/website-projects";
 
-const DESKTOP_WIDTH = 1920;
-const DESKTOP_HEIGHT = 1080;
-
 export default function WebsiteSlide({
   url,
   name,
@@ -15,16 +12,14 @@ export default function WebsiteSlide({
   total,
 }: IWebsiteSlideProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-
-    const update = () => setScale(el.offsetWidth / DESKTOP_WIDTH);
-    update();
-    const ro = new ResizeObserver(update);
+    const ro = new ResizeObserver(() => setReady(el.offsetWidth > 0));
     ro.observe(el);
+    setReady(el.offsetWidth > 0);
     return () => ro.disconnect();
   }, []);
 
@@ -42,32 +37,22 @@ export default function WebsiteSlide({
         background: "var(--background)",
       }}
     >
-      {/* iframe layer */}
+      {/* iframe layer — renders at native device width, scrollbar clipped by overflow:hidden */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-        {shouldLoad && scale > 0 && (
-          <div
+        {shouldLoad && ready && (
+          <iframe
+            src={url}
+            title={name}
+            className="tw:pointer-events-none"
             style={{
-              width: `${DESKTOP_WIDTH}px`,
-              height: `${DESKTOP_HEIGHT}px`,
-              transform: `scale(${scale})`,
-              transformOrigin: "top left",
+              border: "none",
+              display: "block",
+              /* +20px clips the scrollbar outside the overflow:hidden parent */
+              width: "calc(100% + 20px)",
+              height: "calc(100% + 20px)",
             }}
-          >
-            {/* 20px wider/taller so the browser's scrollbar is pushed outside
-                the overflow:hidden parent and never rendered visibly */}
-            <iframe
-              src={url}
-              title={name}
-              width={DESKTOP_WIDTH + 20}
-              height={DESKTOP_HEIGHT + 20}
-              className="tw:pointer-events-none"
-              style={{
-                border: "none",
-                display: "block",
-              }}
-              loading="lazy"
-            />
-          </div>
+            loading="lazy"
+          />
         )}
       </div>
 
@@ -111,9 +96,9 @@ export default function WebsiteSlide({
       <div
         style={{
           position: "absolute",
-          bottom: "clamp(48px, 7vh, 96px)",
-          left: "clamp(48px, 6vw, 96px)",
-          right: "clamp(80px, 12vw, 160px)",
+          bottom: "clamp(24px, 5vh, 96px)",
+          left: "clamp(20px, 6vw, 96px)",
+          right: "clamp(52px, 12vw, 160px)",
           zIndex: 10,
         }}
       >

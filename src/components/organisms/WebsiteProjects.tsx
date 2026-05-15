@@ -13,6 +13,18 @@ export default function WebsiteProjects({ websites }: IWebsiteProjectsProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [loadedIndices, setLoadedIndices] = useState<Set<number>>(new Set([0]));
+  const [headerHeight, setHeaderHeight] = useState(64);
+
+  useEffect(() => {
+    const measure = () => {
+      const h =
+        document.querySelector("header")?.getBoundingClientRect().height ?? 64;
+      setHeaderHeight(Math.round(h));
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -59,11 +71,16 @@ export default function WebsiteProjects({ websites }: IWebsiteProjectsProps) {
       id="website-projects"
       ref={sectionRef}
       className="tw:scroll-mt-20"
-      style={{ height: `calc(64px + ${Math.max(websites.length, 1) * 50}vh)` }}
+      style={{
+        height: `calc(${headerHeight}px + ${Math.max(websites.length, 1) * 50}vh)`,
+      }}
     >
       <div
-        className="tw:sticky tw:top-16 tw:overflow-hidden"
-        style={{ height: "calc(100vh - 64px)" }}
+        className="tw:sticky tw:overflow-hidden"
+        style={{
+          top: `${headerHeight}px`,
+          height: `calc(100vh - ${headerHeight}px)`,
+        }}
       >
         {/* Accessible heading — visually hidden */}
         <h2 className="tw:sr-only">Website Projects</h2>
