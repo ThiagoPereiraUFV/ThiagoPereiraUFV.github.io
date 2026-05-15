@@ -3,7 +3,9 @@ import Footer from "@/components/organisms/Footer";
 import Header from "@/components/organisms/Header";
 import Projects from "@/components/organisms/Projects";
 import LowCodeProjects from "@/components/organisms/LowCodeProjects";
+import WebsiteProjects from "@/components/organisms/WebsiteProjects";
 import { userData } from "@/helpers/userdata";
+import { websiteProjects } from "@/helpers/websitedata";
 import {
   getGithubData,
   getGithubRawFile,
@@ -32,7 +34,7 @@ export default async function Home() {
   const data = {
     header: {
       title: profileName,
-      sections: ["About", "Projects", "Contact"],
+      sections: ["About", "Projects", "Website Projects", "Contact"],
     },
     about: {
       aboutUserData,
@@ -52,6 +54,7 @@ export default async function Home() {
     <main className="tw:grid tw:grid-cols-1 tw:gap-10 tw:py-4">
       <Header {...data.header} />
       <About {...data.about} />
+      <WebsiteProjects websites={websiteProjects} />
       <Projects {...data.projects} />
       <LowCodeProjects projects={lowCodeProjectsData} />
       <Footer {...userData} />
