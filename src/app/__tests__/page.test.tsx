@@ -2,10 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import Home from "../page";
 import { ServiceFactory } from "@/factories/serviceFactory";
 import { IGithubRepository } from "@/interfaces/services";
-import {
-  mockGithubUser,
-  mockGithubRepo,
-} from "../../testUtils";
+import { mockGithubUser, mockGithubRepo } from "../../testUtils";
 
 // Define interfaces for mock component props
 interface MockHeaderProps {
@@ -139,7 +136,9 @@ describe("Home Page", () => {
     const result = await Home();
     const { container } = render(result);
 
-    expect(container.textContent).toContain("GitHub API rate limit exceeded");
+    // Page renders without crashing; Projects section is hidden when data fails
+    expect(container.querySelector("main")).toBeTruthy();
+    expect(screen.queryByTestId("projects")).toBeNull();
   });
 
   it("should render error message when about data fails", async () => {
@@ -161,7 +160,9 @@ describe("Home Page", () => {
     const result = await Home();
     const { container } = render(result);
 
-    expect(container.textContent).toContain("README.md not found");
+    // Page renders without crashing; About section is hidden when data fails
+    expect(container.querySelector("main")).toBeTruthy();
+    expect(screen.queryByTestId("about")).toBeNull();
   });
 
   it("should call repository methods with correct parameters", async () => {
@@ -234,7 +235,9 @@ describe("Home Page", () => {
     const main = container.querySelector("main");
     expect(main).toBeInTheDocument();
     // Layout is a full-width grid div directly inside main (after the mocked Header)
-    const allDivs = main ? Array.from(main.querySelectorAll(":scope > div")) : [];
+    const allDivs = main
+      ? Array.from(main.querySelectorAll(":scope > div"))
+      : [];
     const layoutDiv = allDivs.find((el) => el.className.includes("tw:grid"));
     expect(layoutDiv).toBeTruthy();
     expect(layoutDiv?.className).toContain("tw:gap-24");
@@ -252,8 +255,8 @@ describe("Home Page", () => {
 
     render(await Home());
 
-    const projects = screen.getByTestId("projects");
-    expect(projects.textContent).toContain("0 repos");
+    // Projects section is hidden when repos is empty
+    expect(screen.queryByTestId("projects")).toBeNull();
+    expect(screen.getByTestId("website-projects")).toBeTruthy();
   });
-
 });

@@ -53,28 +53,37 @@ describe("WebsiteProjects Component", () => {
     expect(heading.textContent).toBe("Website Projects");
   });
 
-  it("should render all website cards", async () => {
+  it("should render nav buttons for all websites", async () => {
     await act(async () => {
       render(<WebsiteProjects websites={mockWebsites} />);
     });
 
     mockWebsites.forEach(({ name }) => {
-      expect(screen.getByTitle(name)).toBeTruthy();
+      expect(
+        screen.getByRole("button", { name: `Go to ${name}` }),
+      ).toBeTruthy();
     });
   });
 
-  it("should render with correct CSS classes", () => {
+  it("should render the first website slide as active", async () => {
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(<WebsiteProjects websites={mockWebsites} />));
+    });
+
+    const iframe = container.querySelector("iframe");
+    expect(iframe).toBeTruthy();
+    expect(iframe?.getAttribute("title")).toBe(mockWebsites[0].name);
+  });
+
+  it("should render with sticky scroll structure", () => {
     const { container } = render(<WebsiteProjects websites={mockWebsites} />);
 
     const section = container.querySelector("#website-projects");
-    expect(section?.className).toContain("tw:grid");
-    expect(section?.className).toContain("tw:px-6");
-    expect(section?.className).toContain("tw:lg:px-16");
+    expect(section?.getAttribute("style")).toContain("vh");
 
-    const grid = container.querySelector(
-      ".tw\\:grid.tw\\:grid-cols-1.tw\\:lg\\:grid-cols-2",
-    );
-    expect(grid).toBeTruthy();
+    const sticky = container.querySelector(".tw\\:sticky");
+    expect(sticky).toBeTruthy();
   });
 
   it("should render empty state without error", () => {
