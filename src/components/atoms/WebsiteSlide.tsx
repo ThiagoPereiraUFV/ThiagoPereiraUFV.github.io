@@ -57,11 +57,11 @@ export default function WebsiteSlide({
             style={{
               border: "none",
               display: "block",
-              /* +20px clips the scrollbar outside the overflow:hidden parent */
-              width: "calc(100% + 20px)",
-              height: "calc(100% + 20px)",
+              width: "100%",
+              height: "100%",
             }}
             loading="lazy"
+            scrolling="no"
           />
         )}
       </div>
