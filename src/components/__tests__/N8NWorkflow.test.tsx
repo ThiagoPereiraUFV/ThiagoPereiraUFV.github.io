@@ -63,7 +63,7 @@ describe("N8NWorkflow Component", () => {
       <N8NWorkflow workflowKey="test-key" workflow={mockWorkflow} />,
     );
 
-    const workflowEl = container.querySelector("[data-workflow]");
+    const workflowEl = container.querySelector("n8n-demo");
     expect(workflowEl).toBeTruthy();
   });
 
@@ -72,8 +72,8 @@ describe("N8NWorkflow Component", () => {
       <N8NWorkflow workflowKey="test-key" workflow={mockWorkflow} />,
     );
 
-    const workflowEl = container.querySelector("[data-workflow]");
-    const workflowAttr = workflowEl?.getAttribute("data-workflow");
+    const workflowEl = container.querySelector("n8n-demo");
+    const workflowAttr = workflowEl?.getAttribute("workflow");
 
     expect(workflowAttr).toBeTruthy();
 
@@ -89,7 +89,7 @@ describe("N8NWorkflow Component", () => {
       <N8NWorkflow workflowKey="unique-key" workflow={mockWorkflow} />,
     );
 
-    const workflowEl = container.querySelector("[data-workflow]");
+    const workflowEl = container.querySelector("n8n-demo");
     expect(workflowEl?.getAttribute("data-key")).toBe("unique-key");
   });
 
@@ -102,7 +102,7 @@ describe("N8NWorkflow Component", () => {
     expect(wrapper?.tagName.toLowerCase()).toBe("div");
 
     const heading = wrapper?.querySelector("h3");
-    const workflowEl = wrapper?.querySelector("[data-workflow]");
+    const workflowEl = wrapper?.querySelector("n8n-demo");
 
     expect(heading).toBeTruthy();
     expect(workflowEl).toBeTruthy();
@@ -134,8 +134,8 @@ describe("N8NWorkflow Component", () => {
     const heading = container.querySelector("h3");
     expect(heading?.textContent).toBe("Minimal Workflow");
 
-    const workflowEl = container.querySelector("[data-workflow]");
-    const workflowAttr = workflowEl?.getAttribute("data-workflow");
+    const workflowEl = container.querySelector("n8n-demo");
+    const workflowAttr = workflowEl?.getAttribute("workflow");
     const parsedWorkflow = JSON.parse(workflowAttr!);
 
     expect(parsedWorkflow.id).toBe("minimal");
@@ -178,8 +178,8 @@ describe("N8NWorkflow Component", () => {
       <N8NWorkflow workflowKey="complex-key" workflow={complexWorkflow} />,
     );
 
-    const workflowEl = container.querySelector("[data-workflow]");
-    const workflowAttr = workflowEl?.getAttribute("data-workflow");
+    const workflowEl = container.querySelector("n8n-demo");
+    const workflowAttr = workflowEl?.getAttribute("workflow");
     const parsedWorkflow = JSON.parse(workflowAttr!);
 
     expect(parsedWorkflow.nodes).toHaveLength(1);
@@ -195,7 +195,7 @@ describe("N8NWorkflow Component", () => {
         <N8NWorkflow workflowKey={key} workflow={mockWorkflow} />,
       );
 
-      const workflowEl = container.querySelector("[data-workflow]");
+      const workflowEl = container.querySelector("n8n-demo");
       expect(workflowEl?.getAttribute("data-key")).toBe(key);
     });
   });
@@ -221,8 +221,8 @@ describe("N8NWorkflow Component", () => {
       <N8NWorkflow workflowKey="test-key" workflow={mockWorkflow} />,
     );
 
-    const workflowEl = container.querySelector("[data-workflow]");
-    const workflowAttr = workflowEl?.getAttribute("data-workflow");
+    const workflowEl = container.querySelector("n8n-demo");
+    const workflowAttr = workflowEl?.getAttribute("workflow");
     const parsedWorkflow = JSON.parse(workflowAttr!);
 
     // Check that all properties are preserved
