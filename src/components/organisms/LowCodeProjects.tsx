@@ -15,10 +15,7 @@ function LazyWorkflow({ project }: { project: ILowCodeProject }) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
+        setIsVisible(entry.isIntersecting);
       },
       { rootMargin: "200px" },
     );

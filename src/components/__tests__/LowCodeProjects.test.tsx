@@ -1,13 +1,17 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import LowCodeProjects from "../organisms/LowCodeProjects";
 import {
   ILowCodeProjectsProps,
   ILowCodeProject,
 } from "@/interfaces/low-code-projects";
 
-// Simulate section being immediately visible via IntersectionObserver
+// Capture IntersectionObserver callbacks so tests can trigger enter/leave
 const mockDisconnect = jest.fn();
+const intersectionCallbacks: Array<
+  (entries: { isIntersecting: boolean }[]) => void
+> = [];
 global.IntersectionObserver = jest.fn().mockImplementation((callback) => {
+  intersectionCallbacks.push(callback);
   return {
     observe: jest.fn().mockImplementation(() => {
       callback([{ isIntersecting: true }]);
@@ -29,6 +33,10 @@ jest.mock("@/components/molecules/N8NWorkflow", () => {
 });
 
 describe("LowCodeProjects Component", () => {
+  beforeEach(() => {
+    intersectionCallbacks.length = 0;
+  });
+
   const mockProjects: ILowCodeProject[] = [
     {
       createdAt: "2023-01-01T00:00:00Z",
@@ -200,5 +208,17 @@ describe("LowCodeProjects Component", () => {
 
     expect(activeWorkflow).toBeTruthy();
     expect(inactiveWorkflow).toBeTruthy();
+  });
+
+  it("should dismount workflow when it leaves the viewport", () => {
+    render(<LowCodeProjects projects={[mockProjects[0]]} />);
+
+    expect(screen.getByTestId("workflow-1")).toBeTruthy();
+
+    act(() => {
+      intersectionCallbacks.forEach((cb) => cb([{ isIntersecting: false }]));
+    });
+
+    expect(screen.queryByTestId("workflow-1")).toBeNull();
   });
 });
