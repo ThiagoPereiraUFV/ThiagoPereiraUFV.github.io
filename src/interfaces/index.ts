@@ -1,4 +1,6 @@
 import { IGithubUserRepo } from "./github";
+import { ILowCodeProject } from "./low-code-projects";
+import { IWebsiteProject } from "./website-projects";
 
 export interface IData {
 	header: {
@@ -10,5 +12,7 @@ export interface IData {
 	};
 	projects: {
 		repos: IGithubUserRepo[];
+		lowCodeProjects: ILowCodeProject[];
+		websiteProjects: IWebsiteProject[];
 	};
 }

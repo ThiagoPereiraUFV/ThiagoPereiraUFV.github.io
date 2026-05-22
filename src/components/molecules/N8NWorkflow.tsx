@@ -14,10 +14,13 @@ export default function N8NWorkflow({
   return (
     <div>
       <h3 className="tw:text-sm">{workflow.name}</h3>
-      <div
+      <n8n-demo
         data-key={workflowKey}
-        data-workflow={JSON.stringify(workflow)}
-      ></div>
+        workflow={JSON.stringify(workflow)}
+        // frame="true"
+        clicktointeract="true"
+        collapseformobile="true"
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { userData } from "@/helpers/userdata";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -92,6 +93,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Script
+          src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2.0.0/webcomponents-loader.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="https://www.unpkg.com/lit@2.0.0-rc.2/polyfill-support.js"
+          strategy="beforeInteractive"
+        />
+        <Script
+          src="https://cdn.jsdelivr.net/npm/@n8n_io/n8n-demo-component/n8n-demo.bundled.js"
+          strategy="afterInteractive"
+          type="module"
+        />
         {children}
       </body>
     </html>

@@ -1,11 +1,12 @@
 import { IData } from "@/interfaces";
-import { getGithubData, getGithubRawFile } from "@/lib/actions";
+import { getGithubData, getGithubRawFile, getLowCodeProjects } from "@/lib/actions";
+import { websiteProjects } from "@/helpers/websitedata";
 
 export async function buildPageData(
 	username: string,
 	profileName: string
 ): Promise<IData> {
-	const [githubDataResult, aboutUserDataResult] = await Promise.allSettled([
+	const [githubDataResult, aboutUserDataResult, lowCodeProjectsResult] = await Promise.allSettled([
 		getGithubData(username),
 		getGithubRawFile({
 			owner: username,
@@ -13,6 +14,7 @@ export async function buildPageData(
 			branch: "main",
 			filepath: "README.md",
 		}),
+		getLowCodeProjects(),
 	]);
 
 	const githubData =
@@ -23,6 +25,10 @@ export async function buildPageData(
 		aboutUserDataResult.status === "fulfilled"
 			? aboutUserDataResult.value
 			: { error: "Failed to fetch about user data" };
+	const lowCodeProjects =
+		lowCodeProjectsResult.status === "fulfilled"
+			? lowCodeProjectsResult.value
+			: [];
 
 	const data = {
 		header: {
@@ -33,7 +39,9 @@ export async function buildPageData(
 			aboutUserData: typeof aboutUserData === "string" ? aboutUserData : "",
 		},
 		projects: {
+			websiteProjects,
 			repos: [],
+			lowCodeProjects: [],
 		},
 	} as IData;
 
@@ -46,6 +54,11 @@ export async function buildPageData(
 	if (!("error" in githubData)) {
 		data.header.sections.push("Projects");
 		data.projects.repos = githubData.repos ?? [];
+	}
+
+	if (!("error" in lowCodeProjects)) {
+		data.header.sections.push("Low-code Projects");
+		data.projects.lowCodeProjects = lowCodeProjects;
 	}
 
 	data.header.sections.push("Contact");
