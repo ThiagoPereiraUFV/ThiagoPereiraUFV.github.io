@@ -4,13 +4,13 @@ import WebsiteCard from "../atoms/WebsiteCard";
 import WebsiteSlide from "../atoms/WebsiteSlide";
 import { IWebsiteProject } from "@/interfaces/website-projects";
 
-// Mock ResizeObserver
-const mockResizeObserver = jest.fn(() => ({
-  observe: jest.fn(),
+// Mock ResizeObserver — triggers callback immediately on observe
+const mockResizeObserver = jest.fn((callback: ResizeObserverCallback) => ({
+  observe: jest.fn(() => callback([], {} as ResizeObserver)),
   disconnect: jest.fn(),
   unobserve: jest.fn(),
 }));
-global.ResizeObserver = mockResizeObserver;
+global.ResizeObserver = mockResizeObserver as unknown as typeof ResizeObserver;
 
 // Mock IntersectionObserver — immediately signals intersection so iframe renders
 const mockIntersectionObserver = jest.fn(
@@ -43,8 +43,11 @@ const mockWebsites: IWebsiteProject[] = [
 ];
 
 describe("WebsiteProjects Component", () => {
-  it("should render the section with heading", () => {
-    const { container } = render(<WebsiteProjects websites={mockWebsites} />);
+  it("should render the section with heading", async () => {
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(<WebsiteProjects websites={mockWebsites} />));
+    });
 
     const section = container.querySelector("#website-projects");
     expect(section).toBeTruthy();
@@ -77,8 +80,11 @@ describe("WebsiteProjects Component", () => {
     expect(iframe?.getAttribute("title")).toBe(mockWebsites[0].name);
   });
 
-  it("should render with sticky scroll structure", () => {
-    const { container } = render(<WebsiteProjects websites={mockWebsites} />);
+  it("should render with sticky scroll structure", async () => {
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(<WebsiteProjects websites={mockWebsites} />));
+    });
 
     const section = container.querySelector("#website-projects");
     expect(section?.getAttribute("style")).toContain("vh");
@@ -87,8 +93,10 @@ describe("WebsiteProjects Component", () => {
     expect(sticky).toBeTruthy();
   });
 
-  it("should render empty state without error", () => {
-    render(<WebsiteProjects websites={[]} />);
+  it("should render empty state without error", async () => {
+    await act(async () => {
+      render(<WebsiteProjects websites={[]} />);
+    });
 
     const heading = screen.getByRole("heading", { level: 2 });
     expect(heading.textContent).toBe("Website Projects");
@@ -160,15 +168,19 @@ describe("WebsiteCard Component", () => {
     expect(styleTag?.textContent).toContain("wzp-");
   });
 
-  it("should render overlay link with accessible label", () => {
-    render(<WebsiteCard url="https://example.com" name="Example Site" />);
+  it("should render overlay link with accessible label", async () => {
+    await act(async () => {
+      render(<WebsiteCard url="https://example.com" name="Example Site" />);
+    });
 
     const overlay = screen.getByRole("link", { name: "Visit Example Site" });
     expect(overlay).toBeTruthy();
   });
 
-  it("should open website in new tab when overlay is clicked", () => {
-    render(<WebsiteCard url="https://example.com" name="Example Site" />);
+  it("should open website in new tab when overlay is clicked", async () => {
+    await act(async () => {
+      render(<WebsiteCard url="https://example.com" name="Example Site" />);
+    });
 
     const overlay = screen.getByRole("link", { name: "Visit Example Site" });
     fireEvent.click(overlay);
@@ -180,8 +192,10 @@ describe("WebsiteCard Component", () => {
     );
   });
 
-  it("should open website in new tab on Enter key press", () => {
-    render(<WebsiteCard url="https://example.com" name="Example Site" />);
+  it("should open website in new tab on Enter key press", async () => {
+    await act(async () => {
+      render(<WebsiteCard url="https://example.com" name="Example Site" />);
+    });
 
     const overlay = screen.getByRole("link", { name: "Visit Example Site" });
     fireEvent.keyDown(overlay, { key: "Enter" });
@@ -193,8 +207,10 @@ describe("WebsiteCard Component", () => {
     );
   });
 
-  it("should open website in new tab on Space key press", () => {
-    render(<WebsiteCard url="https://example.com" name="Example Site" />);
+  it("should open website in new tab on Space key press", async () => {
+    await act(async () => {
+      render(<WebsiteCard url="https://example.com" name="Example Site" />);
+    });
 
     const overlay = screen.getByRole("link", { name: "Visit Example Site" });
     fireEvent.keyDown(overlay, { key: " " });
@@ -206,17 +222,33 @@ describe("WebsiteCard Component", () => {
     );
   });
 
-  it("should display the website name in the label", () => {
-    render(<WebsiteCard url="https://example.com" name="My Portfolio" />);
+  it("should not open website for unrelated key press", async () => {
+    await act(async () => {
+      render(<WebsiteCard url="https://example.com" name="Example Site" />);
+    });
+
+    const overlay = screen.getByRole("link", { name: "Visit Example Site" });
+    fireEvent.keyDown(overlay, { key: "Escape" });
+
+    expect(mockOpen).not.toHaveBeenCalled();
+  });
+
+  it("should display the website name in the label", async () => {
+    await act(async () => {
+      render(<WebsiteCard url="https://example.com" name="My Portfolio" />);
+    });
 
     const nameLabel = screen.getByText("My Portfolio");
     expect(nameLabel).toBeTruthy();
   });
 
-  it("should apply hover shadow on mouseenter and reset on mouseleave", () => {
-    const { container } = render(
-      <WebsiteCard url="https://example.com" name="Example Site" />,
-    );
+  it("should apply hover shadow on mouseenter and reset on mouseleave", async () => {
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(
+        <WebsiteCard url="https://example.com" name="Example Site" />,
+      ));
+    });
 
     const card = container.firstChild as HTMLElement;
     expect(card).toBeTruthy();
@@ -252,32 +284,37 @@ describe("WebsiteSlide Component", () => {
     expect(iframe?.getAttribute("title")).toBe("Example");
   });
 
-  it("should not render iframe when shouldLoad is false", () => {
-    const { container } = render(
-      <WebsiteSlide
-        url="https://example.com"
-        name="Example"
-        isActive={false}
-        shouldLoad={false}
-        index={0}
-        total={3}
-      />,
-    );
+  it("should not render iframe when shouldLoad is false", async () => {
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(
+        <WebsiteSlide
+          url="https://example.com"
+          name="Example"
+          isActive={false}
+          shouldLoad={false}
+          index={0}
+          total={3}
+        />,
+      ));
+    });
 
     expect(container.querySelector("iframe")).toBeNull();
   });
 
-  it("should render site name and counter", () => {
-    render(
-      <WebsiteSlide
-        url="https://example.com"
-        name="My Portfolio"
-        isActive={true}
-        shouldLoad={false}
-        index={1}
-        total={3}
-      />,
-    );
+  it("should render site name and counter", async () => {
+    await act(async () => {
+      render(
+        <WebsiteSlide
+          url="https://example.com"
+          name="My Portfolio"
+          isActive={true}
+          shouldLoad={false}
+          index={1}
+          total={3}
+        />,
+      );
+    });
 
     expect(screen.getByText("My Portfolio")).toBeTruthy();
   });
