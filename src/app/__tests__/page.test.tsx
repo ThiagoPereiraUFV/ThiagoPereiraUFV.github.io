@@ -4,6 +4,17 @@ import { ServiceFactory } from "@/factories/serviceFactory";
 import { IGithubRepository } from "@/interfaces/services";
 import { mockGithubUser, mockGithubRepo } from "../../testUtils";
 
+jest.mock("@/helpers/websitedata", () => ({
+  websiteProjects: [
+    { url: "https://allowed.com", name: "Allowed Site" },
+    { url: "https://allowed2.com", name: "Allowed Site 2" },
+  ],
+  filterIframeAllowed: jest.fn().mockResolvedValue([
+    { url: "https://allowed.com", name: "Allowed Site" },
+    { url: "https://allowed2.com", name: "Allowed Site 2" },
+  ]),
+}));
+
 // Define interfaces for mock component props
 interface MockHeaderProps {
   title: string;
@@ -116,7 +127,7 @@ describe("Home Page", () => {
     expect(screen.getByTestId("about").textContent).toContain("# About Me");
     expect(screen.getByTestId("projects").textContent).toContain("1 repos");
     expect(screen.getByTestId("website-projects").textContent).toContain(
-      "10 sites",
+      "2 sites",
     );
     expect(screen.getByTestId("footer").textContent).toContain(
       "Thiago Pereira",

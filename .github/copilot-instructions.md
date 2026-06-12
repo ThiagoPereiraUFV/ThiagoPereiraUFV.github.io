@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a **Next.js 16.2.6 personal portfolio** site exported as static HTML (`output: 'export'`). It uses React 19.2.6, TypeScript 5, and Tailwind CSS v4.
+This is a **Next.js 16.2.9 personal portfolio** site exported as static HTML (`output: 'export'`). It uses React 19.2.7, TypeScript 6, and Tailwind CSS v4.
 
 ---
 
@@ -15,7 +15,7 @@ src/
 ├── app/              # Next.js App Router (layout, page, globals.css, robots.ts, sitemap.ts, icon.tsx, apple-icon.tsx, opengraph-image.tsx, twitter-image.tsx)
 ├── assets/           # Static assets (SVG icons: email, linkedin, github — light & dark variants)
 ├── components/       # UI components organized by Atomic Design
-│   ├── atoms/        # WebsiteCard.tsx, WebsiteSlide.tsx
+│   ├── atoms/        # SocialCard.tsx, TPBadge.tsx, WebsiteCard.tsx, WebsiteSlide.tsx
 │   ├── molecules/    # N8NWorkflow.tsx
 │   └── organisms/    # Header, Footer, About, Projects, LowCodeProjects, WebsiteProjects
 ├── factories/        # ServiceFactory — dependency injection container
@@ -49,7 +49,7 @@ src/
 page.tsx → helpers/pageData.ts (buildPageData) → lib/actions.ts → ServiceFactory → Repository → ApiService → external API
 ```
 
-- **`helpers/pageData.ts`**: `buildPageData(username, profileName)` — uses `Promise.allSettled` to call `getGithubData` and `getGithubRawFile` in parallel, then shapes the `IData` object. Dynamically adds nav sections (`About`, `Website Projects`, `Projects`, `Contact`) based on what data is available.
+- **`helpers/pageData.ts`**: `buildPageData(username, profileName)` — uses `Promise.allSettled` to call `getGithubData`, `getGithubRawFile`, and `getLowCodeProjects` in parallel, then shapes the `IData` object. Dynamically adds nav sections (`About`, `Website Projects`, `Projects`, `Low-code Projects`, `Contact`) based on what data is available.
 - **`lib/actions.ts`**: Server actions — `getGithubData`, `getGithubUserData`, `getGithubUserRepos`, `getGithubRawFile`, `getLowCodeProjects`. Thin wrappers over `ServiceFactory`.
 - **`factories/serviceFactory.ts`**: Singleton factory that lazily instantiates and caches repository instances. Supports `setGithubRepository`, `setLowCodeRepository`, and `reset()` for test injection.
 - **`repositories/dataRepositories.ts`**: `GithubRepository`, `LowCodeRepository` — implement repository interfaces; orchestrate API calls and error handling.
@@ -73,16 +73,16 @@ page.tsx → helpers/pageData.ts (buildPageData) → lib/actions.ts → ServiceF
 ### Current Page Rendering (`page.tsx`)
 
 ```tsx
-<Header />        // sticky nav with dynamic sections
-<About />         // rendered only if aboutUserData is non-empty
-<WebsiteProjects /> // always rendered; scroll-based iframe slideshow
-<Projects />      // rendered only if repos.length > 0
-<Footer />        // contact section with dark-mode-aware icons
+<Header />           // sticky nav with dynamic sections
+<About />            // rendered only if aboutUserData is non-empty
+<WebsiteProjects />  // rendered only if websiteProjects.length > 0; scroll-based iframe slideshow
+<Projects />         // rendered only if repos.length > 0
+<LowCodeProjects />  // rendered only if lowCodeProjects.length > 0
+<Footer />           // contact section with dark-mode-aware icons
 ```
 
 - `Footer` is rendered as `<Footer {...userData} />` — it receives `username`, `profileName`, and `contact` directly from the `userData` const, not from `IData`.
 - `About` renders README.md content via `dangerouslySetInnerHTML`; styled with the `.about-content` CSS class.
-- `LowCodeProjects` organism exists but is **not** rendered in `page.tsx`.
 
 ---
 
@@ -130,7 +130,7 @@ page.tsx → helpers/pageData.ts (buildPageData) → lib/actions.ts → ServiceF
 - Shared mock data lives in `src/testUtils.ts` (e.g., `mockGithubUser`, `mockGithubRepo`).
 - Use `ServiceFactory.set*` / `ServiceFactory.reset()` to inject mock repositories in tests.
 - Path alias `@/` maps to `src/`; `@/icons/*` maps to `src/assets/icons/*`.
-- Jest is configured via `jest.config.js` using `nextJest` with `babel-jest` transform (`next/babel` preset). Coverage excludes `*.d.ts`, fonts, and assets.
+- Jest is configured via `jest.config.mjs` using `nextJest` with `babel-jest` transform (`next/babel` preset). Coverage excludes `*.d.ts`, fonts, and assets.
 
 ### Running Tests
 

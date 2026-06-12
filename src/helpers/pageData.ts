@@ -1,12 +1,12 @@
 import { IData } from "@/interfaces";
 import { getGithubData, getGithubRawFile, getLowCodeProjects } from "@/lib/actions";
-import { websiteProjects } from "@/helpers/websitedata";
+import { websiteProjects, filterIframeAllowed } from "@/helpers/websitedata";
 
 export async function buildPageData(
 	username: string,
 	profileName: string
 ): Promise<IData> {
-	const [githubDataResult, aboutUserDataResult, lowCodeProjectsResult] = await Promise.allSettled([
+	const [githubDataResult, aboutUserDataResult, lowCodeProjectsResult, filteredWebsitesResult] = await Promise.allSettled([
 		getGithubData(username),
 		getGithubRawFile({
 			owner: username,
@@ -15,6 +15,7 @@ export async function buildPageData(
 			filepath: "README.md",
 		}),
 		getLowCodeProjects(),
+		filterIframeAllowed(websiteProjects),
 	]);
 
 	const githubData =
@@ -29,6 +30,10 @@ export async function buildPageData(
 		lowCodeProjectsResult.status === "fulfilled"
 			? lowCodeProjectsResult.value
 			: [];
+	const filteredWebsites =
+		filteredWebsitesResult.status === "fulfilled"
+			? filteredWebsitesResult.value
+			: [];
 
 	const data = {
 		header: {
@@ -39,7 +44,7 @@ export async function buildPageData(
 			aboutUserData: typeof aboutUserData === "string" ? aboutUserData : "",
 		},
 		projects: {
-			websiteProjects,
+			websiteProjects: filteredWebsites,
 			repos: [],
 			lowCodeProjects: [],
 		},
@@ -49,7 +54,9 @@ export async function buildPageData(
 		data.header.sections.push("About");
 	}
 
-	data.header.sections.push("Website Projects");
+	if (filteredWebsites.length > 0) {
+		data.header.sections.push("Website Projects");
+	}
 
 	if (!("error" in githubData)) {
 		data.header.sections.push("Projects");
