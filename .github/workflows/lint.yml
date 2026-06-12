@@ -1,6 +1,9 @@
 name: Lint
 run-name: Lint next.js app
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches:
