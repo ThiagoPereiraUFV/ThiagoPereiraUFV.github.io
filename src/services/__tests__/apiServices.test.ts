@@ -104,6 +104,28 @@ describe('GithubApiService', () => {
         status: 500
       });
     });
+
+    it('should handle network errors', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+
+      const result = await service.getUserRepos('testuser');
+
+      expect(result.error).toEqual({
+        message: 'Error: Network error',
+        status: 500
+      });
+    });
+
+    it('should handle non-Error exceptions', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue('String error');
+
+      const result = await service.getUserRepos('testuser');
+
+      expect(result.error).toEqual({
+        message: 'Error: String error',
+        status: 500
+      });
+    });
   });
 
   describe('getRawFile', () => {
@@ -157,6 +179,17 @@ describe('GithubApiService', () => {
 
       expect(result.error).toEqual({
         message: 'Error: Network error',
+        status: 500
+      });
+    });
+
+    it('should handle non-Error exceptions', async () => {
+      (global.fetch as jest.Mock).mockRejectedValue('String error');
+
+      const result = await service.getRawFile(fileData);
+
+      expect(result.error).toEqual({
+        message: 'Error: String error',
         status: 500
       });
     });

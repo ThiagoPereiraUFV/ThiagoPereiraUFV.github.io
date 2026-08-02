@@ -4,10 +4,14 @@ jest.mock("next/og", () => ({
   }),
 }));
 
-import Icon, { size, contentType } from "../icon";
+import Icon, { size, contentType, dynamic } from "../icon";
 import { ImageResponse } from "next/og";
 
 describe("Icon (favicon)", () => {
+  it("should export force-static dynamic config", () => {
+    expect(dynamic).toBe("force-static");
+  });
+
   it("should export correct size", () => {
     expect(size).toEqual({ width: 32, height: 32 });
   });

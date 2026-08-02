@@ -1,7 +1,11 @@
-import robots from "../robots";
+import robots, { dynamic } from "../robots";
 import { userData } from "@/helpers/userdata";
 
 describe("robots", () => {
+	it("should export force-static dynamic config", () => {
+		expect(dynamic).toBe("force-static");
+	});
+
 	it("should return a robots configuration object", () => {
 		const result = robots();
 		expect(result).toBeDefined();
