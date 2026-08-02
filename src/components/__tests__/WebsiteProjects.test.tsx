@@ -261,6 +261,31 @@ describe("WebsiteCard Component", () => {
     expect(card.style.boxShadow).toBe("var(--card-shadow)");
     expect(card.style.transform).toBe("translateY(0)");
   });
+
+  it("should not reveal the iframe when the observer reports no intersection", async () => {
+    const originalIO = global.IntersectionObserver;
+    global.IntersectionObserver = jest.fn((_callback: IntersectionObserverCallback) => ({
+      observe: jest.fn((el: Element) => {
+        _callback(
+          [{ isIntersecting: false, target: el } as IntersectionObserverEntry],
+          {} as IntersectionObserver,
+        );
+      }),
+      disconnect: jest.fn(),
+      unobserve: jest.fn(),
+    })) as unknown as typeof IntersectionObserver;
+
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(
+        <WebsiteCard url="https://example.com" name="Example Site" />,
+      ));
+    });
+
+    expect(container.querySelector("iframe")).toBeNull();
+
+    global.IntersectionObserver = originalIO;
+  });
 });
 
 describe("WebsiteSlide Component", () => {
@@ -388,6 +413,47 @@ describe("WebsiteProjects scroll and navigation", () => {
     });
 
     expect(container.querySelector("#website-projects")).toBeTruthy();
+  });
+
+  it("should not queue a next slide when scroll reaches the last slide", async () => {
+    Object.defineProperty(window, "innerHeight", {
+      configurable: true,
+      value: 500,
+    });
+
+    let container!: HTMLElement;
+    await act(async () => {
+      ({ container } = render(<WebsiteProjects websites={mockWebsites} />));
+    });
+
+    const section = container.querySelector("#website-projects") as HTMLElement;
+
+    Object.defineProperty(section, "offsetHeight", {
+      configurable: true,
+      get: () => 3000,
+    });
+    // scrolled (2500) === totalScrollable (3000 - 500), so progress clamps to
+    // 1 and index resolves to the last slide (websites.length - 1).
+    jest.spyOn(section, "getBoundingClientRect").mockReturnValue({
+      top: -2500,
+      bottom: 500,
+      left: 0,
+      right: 800,
+      width: 800,
+      height: 3000,
+      x: 0,
+      y: -2500,
+      toJSON: () => ({}),
+    } as DOMRect);
+
+    await act(async () => {
+      fireEvent.scroll(window);
+    });
+
+    const lastNavButton = screen.getByRole("button", {
+      name: `Go to ${mockWebsites[mockWebsites.length - 1].name}`,
+    });
+    expect(lastNavButton.style.width).toBe("8px");
   });
 
   it("should call window.scrollTo when nav button is clicked", async () => {
