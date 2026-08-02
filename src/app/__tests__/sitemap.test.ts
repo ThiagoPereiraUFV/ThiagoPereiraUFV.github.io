@@ -1,7 +1,11 @@
-import sitemap from "../sitemap";
+import sitemap, { dynamic } from "../sitemap";
 import { userData } from "@/helpers/userdata";
 
 describe("sitemap", () => {
+	it("should export force-static dynamic config", () => {
+		expect(dynamic).toBe("force-static");
+	});
+
 	it("should return an array with one entry", () => {
 		const result = sitemap();
 		expect(Array.isArray(result)).toBe(true);

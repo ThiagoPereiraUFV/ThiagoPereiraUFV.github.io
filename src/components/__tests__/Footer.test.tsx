@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import Footer from "../organisms/Footer";
 import { IFooterProps } from "@/interfaces/footer";
 
@@ -172,6 +172,37 @@ describe("Footer Component", () => {
     expect(mockRemoveEventListener).toHaveBeenCalledWith(
       "change",
       expect.any(Function),
+    );
+  });
+
+  it("should switch to dark mode icons when the media query change fires", () => {
+    let changeHandler: ((e: MediaQueryListEvent) => void) | undefined;
+
+    (window.matchMedia as jest.Mock).mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      addEventListener: jest.fn((_event: string, handler: typeof changeHandler) => {
+        changeHandler = handler;
+      }),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    }));
+
+    render(<Footer {...defaultProps} />);
+
+    expect(screen.getByAltText("Email").getAttribute("src")).toBe(
+      "/email.svg",
+    );
+
+    act(() => {
+      changeHandler?.({ matches: true } as MediaQueryListEvent);
+    });
+
+    expect(screen.getByAltText("Email").getAttribute("src")).toContain(
+      "email-dark",
     );
   });
 

@@ -4,11 +4,20 @@ jest.mock("next/og", () => ({
   }),
 }));
 
-import TwitterImage, { alt, size, contentType } from "../twitter-image";
+import TwitterImage, {
+  alt,
+  size,
+  contentType,
+  dynamic,
+} from "../twitter-image";
 import { ImageResponse } from "next/og";
 import { userData } from "@/helpers/userdata";
 
 describe("TwitterImage", () => {
+  it("should export force-static dynamic config", () => {
+    expect(dynamic).toBe("force-static");
+  });
+
   it("should export correct size", () => {
     expect(size).toEqual({ width: 1200, height: 600 });
   });

@@ -1,4 +1,4 @@
-import { filterIframeAllowed } from "../websitedata";
+import { filterIframeAllowed, websiteProjects } from "../websitedata";
 import { IWebsiteProject } from "@/interfaces/website-projects";
 
 const mockSites: IWebsiteProject[] = [
@@ -24,6 +24,17 @@ function makeFetchMock(
 		} as unknown as Response);
 	};
 }
+
+describe("websiteProjects", () => {
+	it("exports a non-empty list of website projects", () => {
+		expect(Array.isArray(websiteProjects)).toBe(true);
+		expect(websiteProjects.length).toBeGreaterThan(0);
+		websiteProjects.forEach((site) => {
+			expect(typeof site.url).toBe("string");
+			expect(typeof site.name).toBe("string");
+		});
+	});
+});
 
 describe("filterIframeAllowed", () => {
 	beforeEach(() => {
@@ -112,6 +123,19 @@ describe("filterIframeAllowed", () => {
 				get: (h: string) =>
 					h.toLowerCase() === "content-security-policy"
 						? "frame-ancestors https://embed.example.com"
+						: null,
+			},
+		} as unknown as Response);
+		const result = await filterIframeAllowed([{ url: "https://x.com", name: "X" }]);
+		expect(result).toHaveLength(1);
+	});
+
+	it("includes sites with a CSP header that has no frame-ancestors directive", async () => {
+		(global as Record<string, unknown>).fetch = jest.fn().mockResolvedValue({
+			headers: {
+				get: (h: string) =>
+					h.toLowerCase() === "content-security-policy"
+						? "default-src 'self'"
 						: null,
 			},
 		} as unknown as Response);

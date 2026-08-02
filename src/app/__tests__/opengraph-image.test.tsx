@@ -4,11 +4,20 @@ jest.mock("next/og", () => ({
   }),
 }));
 
-import OpenGraphImage, { alt, size, contentType } from "../opengraph-image";
+import OpenGraphImage, {
+  alt,
+  size,
+  contentType,
+  dynamic,
+} from "../opengraph-image";
 import { ImageResponse } from "next/og";
 import { userData } from "@/helpers/userdata";
 
 describe("OpenGraphImage", () => {
+  it("should export force-static dynamic config", () => {
+    expect(dynamic).toBe("force-static");
+  });
+
   it("should export correct size", () => {
     expect(size).toEqual({ width: 1200, height: 630 });
   });

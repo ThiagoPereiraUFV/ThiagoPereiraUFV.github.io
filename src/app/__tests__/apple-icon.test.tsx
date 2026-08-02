@@ -4,10 +4,14 @@ jest.mock("next/og", () => ({
   }),
 }));
 
-import AppleIcon, { size, contentType } from "../apple-icon";
+import AppleIcon, { size, contentType, dynamic } from "../apple-icon";
 import { ImageResponse } from "next/og";
 
 describe("AppleIcon (apple touch icon)", () => {
+  it("should export force-static dynamic config", () => {
+    expect(dynamic).toBe("force-static");
+  });
+
   it("should export correct size", () => {
     expect(size).toEqual({ width: 180, height: 180 });
   });
