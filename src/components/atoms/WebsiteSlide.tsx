@@ -25,6 +25,7 @@ export default function WebsiteSlide({
 
   useEffect(() => {
     const el = containerRef.current;
+    /* istanbul ignore next -- ref is always attached to the root div on mount */
     if (!el) return;
     const ro = new ResizeObserver(() => setReady(el.offsetWidth > 0));
     ro.observe(el);
