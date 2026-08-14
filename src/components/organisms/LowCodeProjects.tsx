@@ -11,6 +11,7 @@ function LazyWorkflow({ project }: { project: ILowCodeProject }) {
 
   useEffect(() => {
     const el = ref.current;
+    /* istanbul ignore next -- ref is always attached to the root div on mount */
     if (!el) return;
 
     const observer = new IntersectionObserver(

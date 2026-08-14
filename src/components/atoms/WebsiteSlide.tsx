@@ -25,6 +25,7 @@ export default function WebsiteSlide({
 
   useEffect(() => {
     const el = containerRef.current;
+    /* istanbul ignore next -- ref is always attached to the root div on mount */
     if (!el) return;
     const ro = new ResizeObserver(() => setReady(el.offsetWidth > 0));
     ro.observe(el);
@@ -127,69 +128,80 @@ export default function WebsiteSlide({
           {String(total).padStart(2, "0")}
         </p>
 
-        {/* Site name */}
-        <h3
+        {/* Site name + visit button */}
+        <div
           style={{
-            color: "#fff",
-            fontSize: "clamp(2rem, 5vw, 4rem)",
-            fontWeight: 700,
-            letterSpacing: "-0.03em",
-            lineHeight: 1.05,
-            marginBottom: "28px",
-            textShadow: "0 2px 32px rgba(0,0,0,0.6)",
-          }}
-        >
-          {name}
-        </h3>
-
-        {/* Visit button */}
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`Visit ${name}`}
-          style={{
-            display: "inline-flex",
+            display: "flex",
+            flexWrap: "wrap",
             alignItems: "center",
-            gap: "10px",
-            padding: "14px 32px",
-            background: "linear-gradient(135deg, #6366f1 0%, #06b6d4 100%)",
-            color: "#fff",
-            borderRadius: "999px",
-            fontSize: "14px",
-            fontWeight: 600,
-            textDecoration: "none",
-            letterSpacing: "0.03em",
-            transition: "filter 0.2s ease, transform 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.filter =
-              "brightness(1.15)";
-            (e.currentTarget as HTMLAnchorElement).style.transform =
-              "scale(1.04)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.filter =
-              "brightness(1)";
-            (e.currentTarget as HTMLAnchorElement).style.transform = "scale(1)";
+            gap: "24px",
           }}
         >
-          Visit Site
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          <h3
+            style={{
+              color: "#fff",
+              fontSize: "clamp(2rem, 5vw, 4rem)",
+              fontWeight: 700,
+              letterSpacing: "-0.03em",
+              lineHeight: 1.05,
+              margin: 0,
+              textShadow: "0 2px 32px rgba(0,0,0,0.6)",
+            }}
           >
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-            <polyline points="15,3 21,3 21,9" />
-            <line x1="10" y1="14" x2="21" y2="3" />
-          </svg>
-        </a>
+            {name}
+          </h3>
+
+          {/* Visit button */}
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Visit ${name}`}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "14px 32px",
+              background: "linear-gradient(135deg, #6366f1 0%, #06b6d4 100%)",
+              color: "#fff",
+              borderRadius: "999px",
+              fontSize: "14px",
+              fontWeight: 600,
+              textDecoration: "none",
+              letterSpacing: "0.03em",
+              transition: "filter 0.2s ease, transform 0.2s ease",
+              flexShrink: 0,
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.filter =
+                "brightness(1.15)";
+              (e.currentTarget as HTMLAnchorElement).style.transform =
+                "scale(1.04)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.filter =
+                "brightness(1)";
+              (e.currentTarget as HTMLAnchorElement).style.transform =
+                "scale(1)";
+            }}
+          >
+            Visit Site
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15,3 21,3 21,9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   );

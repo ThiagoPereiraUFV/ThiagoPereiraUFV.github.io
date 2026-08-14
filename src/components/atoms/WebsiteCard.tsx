@@ -31,6 +31,7 @@ export default function WebsiteCard({ url, name }: IWebsiteProject) {
 
   useEffect(() => {
     const el = containerRef.current;
+    /* istanbul ignore next -- ref is always attached to the root div on mount */
     if (!el) return;
 
     // Only measure width for scaling

@@ -28,6 +28,7 @@ export default function WebsiteProjects({ websites }: IWebsiteProjectsProps) {
 
   useEffect(() => {
     const section = sectionRef.current;
+    /* istanbul ignore next -- ref is always attached to the root section on mount */
     if (!section) return;
 
     const handleScroll = () => {
@@ -58,6 +59,7 @@ export default function WebsiteProjects({ websites }: IWebsiteProjectsProps) {
 
   const scrollToSlide = useCallback((index: number) => {
     const section = sectionRef.current;
+    /* istanbul ignore next -- ref is always attached to the root section on mount */
     if (!section) return;
     const sectionTop = section.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({
