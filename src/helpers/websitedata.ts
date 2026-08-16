@@ -54,6 +54,7 @@ export const websiteProjects: IWebsiteProject[] = [
 	},
 	{ url: "https://protocolomapa.com.br", name: "Protocolo MAPA" },
 	{ url: "https://meunorden.com.br", name: "Norden" },
+	{ url: "https://milkroad.com.br", name: "Milk Road" },
 	{ url: "https://benson.com.br", name: "Benson" },
 	{ url: "https://mosincorporadora.com", name: "MOS Incorporadora" },
 	{ url: "https://summitvisa.com", name: "Summit Visa" },
