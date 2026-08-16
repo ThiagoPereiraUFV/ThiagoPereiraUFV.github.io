@@ -71,4 +71,8 @@ export const websiteProjects: IWebsiteProject[] = [
 		url: "https://thiagopereiraufv.github.io/medcenter-vicosa",
 		name: "Medcenter Viçosa",
 	},
+	{
+		url: "https://thiagopereiraufv.github.io/dra-kiara-aguilar",
+		name: "Dra. Kiara Aguilar",
+	},
 ];
