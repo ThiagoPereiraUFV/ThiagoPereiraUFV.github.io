@@ -76,4 +76,8 @@ export const websiteProjects: IWebsiteProject[] = [
 		url: "https://thiagopereiraufv.github.io/dra-kiara-aguilar",
 		name: "Dra. Kiara Aguilar",
 	},
+	{
+		url: "https://thiagopereiraufv.github.io/extractify",
+		name: "Extractify",
+	},
 ];
